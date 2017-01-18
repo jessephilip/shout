@@ -1,0 +1,33 @@
+{
+  "name": "shout",
+  "version": "1.0.0",
+  "description": "An app to help manage your social networking",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jessephilip/shout.git"
+  },
+  "author": "jessephilip",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jessephilip/shout/issues"
+  },
+  "homepage": "https://github.com/jessephilip/shout#readme",
+  "dependencies": {
+    "babel-core": "^6.21.0",
+    "babel-loader": "^6.2.10",
+    "babel-preset-es2015": "^6.18.0",
+    "babel-preset-react": "^6.16.0",
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "mongoose": "^4.7.7",
+    "morgan": "^1.7.0",
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2",
+    "webpack": "^1.14.0"
+  }
+}
