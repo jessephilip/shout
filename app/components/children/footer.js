@@ -7,7 +7,7 @@ const Footer = React.createClass ({
     // Here we render the function
     render: function () {
         return (
-			<footer>This is the footer</footer>
+			<footer className="bg-accent text-center">This is the footer</footer>
         );
     }
 });

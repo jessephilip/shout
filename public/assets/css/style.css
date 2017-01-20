@@ -9,60 +9,105 @@ Alt = #cfc291
 
  */
 
- /* ---------- Text Color Classes ---------- */
- .text-main {
-	 color: #695d46;
- }
 
- .text-accent {
-	 color: #ff712c;
- }
+/* ---------- Text Color Classes ---------- */
 
- /* ---------- Background Color Classes ---------- */
- .bg-main {
-	background-color: #fff6c5;
- }
+.text-main {
+    color: #695d46;
+}
 
- .bg-accent {
-	background-color: #a1e8d9;
- }
+.text-accent {
+    color: #ff712c;
+}
 
- .bg-alt {
-	 background-color: #cfc291;
- }
 
- /* ---------- Show and Hide ---------- */
- .hidden {
-	 display: none;
- }
+/* ---------- Background Color Classes ---------- */
 
- .show {
-	 display: inherit;
- }
+.bg-main {
+    background-color: #fff6c5;
+}
 
- /* ---------- Layout General Styling ---------- */
+.bg-accent {
+    background-color: #a1e8d9;
+}
 
-#layout {
+.bg-alt {
+    background-color: #cfc291;
+}
+
+
+/* ---------- Show and Hide ---------- */
+
+.hidden {
+    display: none;
+}
+
+.show {
+    display: inherit;
+}
+
+
+/* ---------- Layout General Styling ---------- */
+
+a:hover {
+    cursor: pointer;
+}
+
+body {
+    color: #695d46;
+}
+
+header {}
+
+main {
+    position: absolute;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #695d46;
+}
+
+main input {}
+
+footer {
+    height: 56px;
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+}
+
+nav {
+    color: #695d46;
+}
+
+#mainShout {
+    width: 30%;
+}
+
+
+/*#layout {
     display: flex;
 	flex-direction: column;
+	align-items: center;
 	color: #695d46;
 }
 
 header {
     flex-direction: row;
     background-color: #a1e8d9;
-	flex: 1;
 }
 
 main {
     flex-direction: row;
     background-color: #fff6c5;
-	flex: 1;
 }
 
 footer {
     flex-direction: row;
     background-color: #a1e8d9;
-	flex: 1;
 
-}
+}*/

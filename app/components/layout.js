@@ -1,15 +1,15 @@
 // Include React
-const React = require("react");
+import React from "react";
 
-const Header = require("./children/header.js");
-const Main = require("./children/main.js");
-const Footer = require("./children/footer.js");
+import Header from "./children/header.js";
+import Main from "./children/main.js";
+import Footer from "./children/footer.js";
 
 // Creating the Main component
-const Layout = React.createClass({
+export default class Layout extends React.Component {
 
     // Here we render the function
-    render: function() {
+    render() {
         return (
             <div id="layout">
                 <Header/>
@@ -18,7 +18,4 @@ const Layout = React.createClass({
             </div>
         );
     }
-});
-
-// Export the component back for use in other files
-module.exports = Layout;
+}
