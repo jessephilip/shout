@@ -1,0 +1,68 @@
+/* Colors
+
+Main Background = #fff6c5
+Header and Footer = #a1e8d9
+Text = #695d46
+Accent = #ff712c
+Alt = #cfc291
+
+
+ */
+
+ /* ---------- Text Color Classes ---------- */
+ .text-main {
+	 color: #695d46;
+ }
+
+ .text-accent {
+	 color: #ff712c;
+ }
+
+ /* ---------- Background Color Classes ---------- */
+ .bg-main {
+	background-color: #fff6c5;
+ }
+
+ .bg-accent {
+	background-color: #a1e8d9;
+ }
+
+ .bg-alt {
+	 background-color: #cfc291;
+ }
+
+ /* ---------- Show and Hide ---------- */
+ .hidden {
+	 display: none;
+ }
+
+ .show {
+	 display: inherit;
+ }
+
+ /* ---------- Layout General Styling ---------- */
+
+#layout {
+    display: flex;
+	flex-direction: column;
+	color: #695d46;
+}
+
+header {
+    flex-direction: row;
+    background-color: #a1e8d9;
+	flex: 1;
+}
+
+main {
+    flex-direction: row;
+    background-color: #fff6c5;
+	flex: 1;
+}
+
+footer {
+    flex-direction: row;
+    background-color: #a1e8d9;
+	flex: 1;
+
+}
