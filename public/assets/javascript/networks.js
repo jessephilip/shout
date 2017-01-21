@@ -1,3 +1,6 @@
+// the below is a collection of objects with information about each social network available in the program
+
+// export the object
 module.exports = {
 
     // linkedin

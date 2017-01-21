@@ -1,7 +1,7 @@
 // Include React
 import React from "react";
 
-// Creating the Main component
+// Creating a network box component. this checkbox will determine which social networks receive a post.
 export default class NetworkBox extends React.Component {
 
     constructor() {
@@ -12,6 +12,7 @@ export default class NetworkBox extends React.Component {
         this.checkToggle = this.checkToggle.bind(this);
     }
 
+	// toggle the status and color of the checkbox
     checkToggle(e) {
 
         // get the element that was clicked
@@ -33,11 +34,12 @@ export default class NetworkBox extends React.Component {
 
     }
 
+	// set props to the state on mounting this component
     componentDidMount() {
         this.setState({network: this.props.network});
     }
 
-    // Here we render the function
+    // render the below HTML
     render() {
         return (
 
