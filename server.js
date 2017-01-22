@@ -21,6 +21,7 @@ app.use(bodyParser.json({ type: "application/vnd.api+json" }));
 
 // import routes
 require ("./utilities/routing/html-routes.js")(app);
+require ("./utilities/routing/api-routes.js")(app);
 
 // set up port for server
 const PORT = process.env.PORT || 3000;

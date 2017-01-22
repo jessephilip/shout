@@ -51,4 +51,4 @@ module.exports = {
         icon: "fa fa-tumbler-square fa-2x",
         checkBoxId: "tumblerBox"
     }
-};
+}

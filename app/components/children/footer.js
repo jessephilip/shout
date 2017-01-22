@@ -1,16 +1,13 @@
 // Include React
-const React = require ("react");
+import React from "react";
 
 // Creating the Main component
-const Footer = React.createClass ({
+export default class Footer extends React.Component {
 
     // Here we render the function
-    render: function () {
+    render() {
         return (
 			<footer className="bg-accent text-center">This is the footer</footer>
         );
     }
-});
-
-// Export the component back for use in other files
-module.exports = Footer;
+}

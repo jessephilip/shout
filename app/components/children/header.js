@@ -1,11 +1,11 @@
 // Include React
-const React = require("react");
+import React from "react";
 
 // Creating the Main component
-const Header = React.createClass({
+export default class Header extends React.Component {
 
     // Here we render the function
-    render: function() {
+    render() {
         return (
             <nav className="navbar navbar-toggleable-md navbar-light fixed-top bg-accent">
                 <button className="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -35,7 +35,4 @@ const Header = React.createClass({
             </nav>
         );
     }
-});
-
-// Export the component back for use in other files
-module.exports = Header;
+}
