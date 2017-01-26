@@ -48,7 +48,7 @@ module.exports = {
 	// instagram
     tumbler: {
         name: "Tumbler",
-        icon: "fa fa-tumbler-square fa-2x",
+        icon: "fa fa-tumblr-square fa-2x",
         checkBoxId: "tumblerBox"
     }
 }

@@ -11,5 +11,14 @@ module.exports = {
         }).catch((error) => {
             callback(error);
         });
+    },
+
+    createTweet: (msg, callback) => {
+        axios.post("/tweet", {msg: msg}).then((result) => {
+            callback(result);
+        }).catch((error) => {
+            callback(error);
+        });
+
     }
 }

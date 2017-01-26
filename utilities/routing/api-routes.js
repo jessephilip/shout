@@ -13,4 +13,19 @@ module.exports = (app) => {
 
         });
     });
+
+	// twitter POST routes
+	app.post("/tweet", (req, res) => {
+
+		console.log(req.body);
+
+		//use the twitter api to post a tweet
+		client.post("statuses/update", {status: req.body.msg}, (error, tweet, response) => {
+			if (error) console.log(error);
+			else {
+				console.log("response", response);
+				res.send(tweet);
+			}
+		});
+	});
 }
