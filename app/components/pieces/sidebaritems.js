@@ -60,7 +60,8 @@ export default class SideLists extends React.Component {
                         {this.props.messages.map(function(key, index) {
                             return (
                                 <div key={index} className="list-group-item">
-                                    {key.text}
+                                    {key.text} {key.created_at}
+									{key.source}
                                 </div>
                             );
                         })}

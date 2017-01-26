@@ -29,13 +29,13 @@ export default class Main extends React.Component {
         this.tweet = this.tweet.bind(this);
         this.toggleNetworkState = this.toggleNetworkState.bind(this);
         this.shout = this.shout.bind(this);
+		this.clearNetworksSelected = this.clearNetworksSelected.bind(this);
     }
 
     componentDidMount() {
-        this.getTweets().then( (results) => {
-            this.setState({ tweets: results.data });
-			console.log("state tweets", this.state.tweets);
-        });
+
+		// give main shout input field the focus
+		document.getElementById("mainShout").focus();
     }
 
     toggleNetworkState(newState, bool) {
@@ -68,24 +68,32 @@ export default class Main extends React.Component {
 
                 case "linkedin":
                     alertify.success("Posting linkedIn message.");
+					this.clearNetworksSelected();
                     break;
                 case "facebook":
                     alertify.success("Posting FaceBook message.");
+					this.clearNetworksSelected();
                     break;
                 case "instagram":
                     alertify.success("Posting Instagram message.");
+					this.clearNetworksSelected();
                     break;
                 case "twitter":
-                    alertify.success("Tweeting.");
+					// this.tweet();
+                    document.getElementById("mainShout").value = "";
+					this.clearNetworksSelected();
                     break;
                 case "googleplus":
                     alertify.success("Posting Google Plus message.");
+					this.clearNetworksSelected();
                     break;
                 case "pinterest":
                     alertify.success("Posting to pinterest board.");
+					this.clearNetworksSelected();
                     break;
                 case "tumbler":
                     alertify.success("Posting to Tumbler.");
+					this.clearNetworksSelected();
                     break;
                 default:
                     alertify.error("Error. Tried to post to: " + this.state.postStatus[i] + ".");
@@ -94,14 +102,13 @@ export default class Main extends React.Component {
     }
 
     getTweets() {
-        return new Promise( (resolve, reject) => {
+        return new Promise((resolve, reject) => {
             twitter_helper.getTweets("jessematherne", function(result) {
-                 resolve(result);
+                resolve(result);
             });
 
         });
-	}
-
+    }
 
     tweet() {
         // variable for the tweet message
@@ -120,6 +127,14 @@ export default class Main extends React.Component {
             });
         }
     }
+
+	clearNetworksSelected() {
+		let targets = document.getElementsByClassName("networkBox");
+		for (var i = 0; i < targets.length; i++) {
+			targets[i].setAttribute("data-selected", false);
+			targets[i].style.color = "#695d46";
+		}
+	}
 
     // Here we render the function
     render() {

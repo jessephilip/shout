@@ -131,6 +131,14 @@ nav {
     color: #695d46;
 }
 
+#loginName {
+	margin-right: 10px;
+}
+
+#loginPassword {
+	margin-right: 10px;
+}
+
 
 /*#layout {
     display: flex;
