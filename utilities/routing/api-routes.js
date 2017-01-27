@@ -11,7 +11,8 @@ module.exports = (app) => {
 		console.log("/getUser reached", req.query.user);
 		let params = req.query.user;
 		User.find({name: params.name}, function(error, results) {
-			if (error || results.data.length === 0) {
+			console.log(results);
+			if (error || results.length === 0) {
 				res.send("error");
 			}
 			else {

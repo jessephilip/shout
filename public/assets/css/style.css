@@ -63,6 +63,18 @@ font-family: 'Open Sans', sans-serif;
 	border: 1px solid #ff712c;
 }
 
+.btn-outline-primary {
+	background-color: transparent;
+	border: 1px solid #695d46;
+	color: #695d46;
+}
+
+.btn-outline-primary:hover {
+	background-color: #ff712c;
+	border: 1px solid #ff712c;
+	color: #a1e8d9;
+}
+
 
 /* ---------- Show and Hide ---------- */
 
