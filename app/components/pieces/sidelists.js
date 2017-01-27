@@ -2,7 +2,7 @@
 import React from "react";
 
 // import twitter helper
-import twitter_helper from "../../../utilities/helpers/twitter-helper.js";
+import helper from "../../../utilities/helpers/helper.js";
 
 // import SideBarItems
 import SideBarItems from "./sidebaritems.js";
@@ -29,7 +29,7 @@ export default class SideLists extends React.Component {
 
 	getTweets() {
 		return new Promise( (resolve, reject) => {
-			twitter_helper.getTweets("jessematherne", function(result) {
+			helper.getTweets("jessematherne", function(result) {
 				console.log(result);
 				 resolve(result.data);
 			});

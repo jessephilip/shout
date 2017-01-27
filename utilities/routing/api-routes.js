@@ -4,6 +4,20 @@ const client = require("../connections/twitter.js");
 // export routes to go to server.js
 module.exports = (app) => {
 
+	// database GET routes
+
+	app.get("/getUser", (req, res) => {
+		console.log("/getUser reached", req.query.name);
+		res.end();
+	});
+
+	// database POST routes
+	app.post("/createUser", (req, res) => {
+		console.log("/createUser reached", req.body);
+		res.end();
+	});
+
+
     // twitter GET routes
     app.get("/getTweets", (req, res) => {
 

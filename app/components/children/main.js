@@ -7,7 +7,7 @@ import React from "react";
 import networks from "../../../public/assets/javascript/networks.js";
 
 // import twitter helper
-import twitter_helper from "../../../utilities/helpers/twitter-helper.js";
+import helper from "../../../utilities/helpers/helper.js";
 
 // import CheckBox
 import NetworkBox from "../pieces/networkbox.js";
@@ -33,9 +33,13 @@ export default class Main extends React.Component {
     }
 
     componentDidMount() {
+		console.log("main did mount");
 
 		// give main shout input field the focus
 		document.getElementById("mainShout").focus();
+		helper.getUser("jessematherne", (result) => {
+			console.log(result);
+		});
     }
 
     toggleNetworkState(newState, bool) {
@@ -103,7 +107,7 @@ export default class Main extends React.Component {
 
     getTweets() {
         return new Promise((resolve, reject) => {
-            twitter_helper.getTweets("jessematherne", function(result) {
+            helper.getTweets("jessematherne", function(result) {
                 resolve(result);
             });
 
@@ -121,7 +125,7 @@ export default class Main extends React.Component {
         else {
 
             // post tweet
-            twitter_helper.createTweet(tweet, (result) => {
+            helper.createTweet(tweet, (result) => {
                 console.log(result);
                 alertify.success("Sweet. Shout it Out!!!");
             });

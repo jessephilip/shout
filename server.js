@@ -23,6 +23,21 @@ app.use(bodyParser.json({ type: "application/vnd.api+json" }));
 require ("./utilities/routing/html-routes.js")(app);
 require ("./utilities/routing/api-routes.js")(app);
 
+// import mongoose
+const mongoose = require ("mongoose");
+
+// setup mongoose connection
+mongoose.connect("mongodb://localhost/test");
+const db = mongoose.connection;
+
+// handle error upon connection
+db.on("error", console.error.bind(console, "database connection error"));
+
+// open connection to database
+db.once("open", () => {
+	console.log("Database connected.");
+});
+
 // set up port for server
 const PORT = process.env.PORT || 3000;
 
