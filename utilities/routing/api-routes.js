@@ -22,9 +22,27 @@ module.exports = (app) => {
 	});
 
 	// database POST routes
+
+	//TODO: handle error if non-unique username is attempted
 	app.post("/createUser", (req, res) => {
 		console.log("/createUser reached", req.body);
-		res.end();
+		let params = req.body;
+		if (params.password == params.confirm) {
+			let newUser = new User({name: params.name, password: params.password});
+			newUser.save( (error, newUserResult) => {
+				if (error) {
+					res.status(500).send(`Error creating user ${params.name}.`, error);
+				}
+				else {
+					console.log(`Success ${params.name} created.`);
+					res.send(`Success ${params.name} created.`, newUserResult);
+				}
+			});
+		}
+		else {
+			res.status(500).send("Password and Confirmation do not match.");
+		}
+
 	});
 
 
