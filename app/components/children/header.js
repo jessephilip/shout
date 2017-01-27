@@ -99,7 +99,7 @@ export default class Header extends React.Component {
         if (this.login.name && this.login.password) {
             console.log("log in procedures");
             helper.getUser(this.login, (result, error) => {
-                if (error || result.data == "error") {
+                if (error) {
                     console.log(error);
                     alertify.error("Error logging in.");
                 } else {

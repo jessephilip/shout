@@ -5,7 +5,7 @@ const axios = require("axios");
 module.exports = {
 
     // database GET routes
-    getUser: (userObject, callback) => {
+    getUser: (userObject) => {
 
 		let config = {
 			headers: {
@@ -15,19 +15,19 @@ module.exports = {
 		};
 
         axios.get("/getUser", config).then((result) => {
-            callback(result);
+            console.log(result);
         }).catch((error) => {
-            callback(error);
+            console.log(error);
         });
     },
 
     // database POST routes
 
-    createUser: (userObject, callback) => {
+    createUser: (userObject) => {
         axios.post("/createUser", userObject).then((result) => {
-            callback(result);
+            console.log(result);
         }).catch((error) => {
-            callback(error);
+            console.log(error);
         });
     },
 

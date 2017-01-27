@@ -7,17 +7,30 @@ module.exports = (app) => {
 
 	// database GET routes
 
-	app.get("/getUser/", (req, res) => {
-		console.log("/getUser reached", req.headers);
+	app.get("/getUser", (req, res) => {
 		let name = req.headers.name;
 		let password = req.headers.password;
 		User.find({name: name}, function(error, results) {
-			console.log(results);
-			if (error || results.length === 0) {
-				res.send("error");
+			console.log(`Attempted Password: ${password}. User Password: ${results[0].password}`);
+
+			if (error) {
+				console.log(`Error. Error in finding user ${name}.`, error);
+				res.status(500).send(`Error. Error in finding user ${name}.`, error);
 			}
+
+			else if (results.length == 0) {
+				console.log(`Error. User ${name} not found`);
+				res.status(500).send(`Error. User ${name} not found`);
+			}
+
+			else if (results[0].password !== password) {
+				console.log("Error. Password is incorrect.");
+				res.status(500).send(`Error. Password is incorrect.`);
+			}
+
+			// if no errors or pseudo-errors send positive response
 			else {
-				res.send(results);
+				res.status(200).send(results);
 			}
 		});
 	});
