@@ -1,6 +1,9 @@
 // Include React
 import React from "react";
 
+// import heper to file for axios calls
+import helper from "../../../utilities/helpers/helper.js"
+
 // Creating the Main component
 export default class Header extends React.Component {
 
@@ -79,6 +82,18 @@ export default class Header extends React.Component {
 
 		if (this.login.name && this.login.password) {
 			console.log("log in procedures");
+			helper.getUser(this.login, (result, error) => {
+				if (error) {
+					console.log(error);
+					alertify.error("Error logging in.");
+				}
+				else {
+					console.log(result);
+					alertify.success("Logged in.");
+				}
+
+			});
+
 		}
 
     }

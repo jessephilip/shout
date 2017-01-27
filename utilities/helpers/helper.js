@@ -5,8 +5,8 @@ const axios = require("axios");
 module.exports = {
 
     // database GET routes
-    getUser: (username, callback) => {
-        axios.get("/getUser", {params: {name: username}}).then((result) => {
+    getUser: (userObject, callback) => {
+        axios.get("/getUser", {params: {user: userObject}}).then((result) => {
             callback(result);
         }).catch((error) => {
             callback(error);

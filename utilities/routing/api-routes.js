@@ -1,5 +1,6 @@
 // import twitter connection
 const client = require("../connections/twitter.js");
+const User = require("../models/user.js");
 
 // export routes to go to server.js
 module.exports = (app) => {
@@ -7,8 +8,16 @@ module.exports = (app) => {
 	// database GET routes
 
 	app.get("/getUser", (req, res) => {
-		console.log("/getUser reached", req.query.name);
-		res.end();
+		console.log("/getUser reached", req.query.user);
+		let params = req.query.user;
+		User.find({name: params.name}, function(error, results) {
+			if (error || results.data.length === 0) {
+				res.send("error");
+			}
+			else {
+				res.send(results);
+			}
+		});
 	});
 
 	// database POST routes

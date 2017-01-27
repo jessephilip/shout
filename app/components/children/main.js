@@ -37,9 +37,6 @@ export default class Main extends React.Component {
 
 		// give main shout input field the focus
 		document.getElementById("mainShout").focus();
-		helper.getUser("jessematherne", (result) => {
-			console.log(result);
-		});
     }
 
     toggleNetworkState(newState, bool) {
