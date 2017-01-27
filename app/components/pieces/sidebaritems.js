@@ -6,7 +6,11 @@ export default class SideLists extends React.Component {
 
     constructor() {
         super();
-        this.state = {};
+        this.state = {
+			posts: {
+				twitter: []
+			}
+		};
     }
 
     componentDidUpdate() {
