@@ -7,10 +7,11 @@ module.exports = (app) => {
 
 	// database GET routes
 
-	app.get("/getUser", (req, res) => {
-		console.log("/getUser reached", req.query.user);
-		let params = req.query.user;
-		User.find({name: params.name}, function(error, results) {
+	app.get("/getUser/", (req, res) => {
+		console.log("/getUser reached", req.headers);
+		let name = req.headers.name;
+		let password = req.headers.password;
+		User.find({name: name}, function(error, results) {
 			console.log(results);
 			if (error || results.length === 0) {
 				res.send("error");

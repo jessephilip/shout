@@ -6,7 +6,15 @@ module.exports = {
 
     // database GET routes
     getUser: (userObject, callback) => {
-        axios.get("/getUser", {params: {user: userObject}}).then((result) => {
+
+		let config = {
+			headers: {
+				name: userObject.name,
+				password: userObject.password
+			}
+		};
+
+        axios.get("/getUser", config).then((result) => {
             callback(result);
         }).catch((error) => {
             callback(error);

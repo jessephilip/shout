@@ -97,6 +97,15 @@ body {
     color: #695d46;
 }
 
+#loginButton {
+	margin-right: 5px;
+
+}
+
+#signUpButton {
+	margin-left: 5px;
+}
+
 main {
     position: absolute;
     align-items: center;

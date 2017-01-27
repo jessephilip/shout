@@ -188,7 +188,7 @@ export default class Header extends React.Component {
                 <a id="brand" className="navbar-brand" onClick={this.sideBarToggle}>Shout</a>
                 <div id="loginDiv">
                     <button id="loginButton" className="btn btn-outline-primary" onClick={this.loginClick}>Login</button>
-                    <button id="loginButton" className="btn btn-outline-primary" onClick={this.signUpClick}>Sign Up</button>
+                    <button id="signUpButton" className="btn btn-outline-primary" onClick={this.signUpClick}>Sign Up</button>
                 </div>
                 <aside id="loginForm" className="hidden">
                     <input id="loginName" type="text" placeholder="login name"/>
