@@ -1,18 +1,12 @@
 // Include React
 import React from "react";
 
-// import heper to file for axios calls
-import helper from "../../../utilities/helpers/helper.js"
-
 // Creating the Main component
 export default class Header extends React.Component {
 
     constructor() {
         super();
-        this.state = {
-			username: "",
-			name: ""
-		};
+        this.state = { };
         this.sideBarToggle = this.sideBarToggle.bind(this);
         this.loginClick = this.loginClick.bind(this);
         this.loginSubmit = this.loginSubmit.bind(this);
@@ -23,8 +17,8 @@ export default class Header extends React.Component {
     }
 
     componentDidMount() {
-        console.log(`header did mount.`);
 
+        // the below statements make a keylistener enabling the user to simply click enter to submit the login and signup forms.
         document.getElementById("loginUsername").onkeydown = (e) => {
             if (e.keyCode == 13) {
                 this.loginSubmit();
@@ -54,11 +48,13 @@ export default class Header extends React.Component {
         };
     }
 
+	// opens the sidebar containing the recent posts for each network
     sideBarToggle() {
 
+		// get open status of the sidebar
         let open = document.getElementById("sideBar").getAttribute("data-open");
-        console.log(open);
 
+		// if sidebar closed, open it, and vice-versa
         if (open === "false") {
             document.getElementById("sideBar").style.left = "0px";
             document.getElementById("sideBar").setAttribute("data-open", true);
@@ -150,8 +146,15 @@ export default class Header extends React.Component {
 
             // api-call to /getUser
             axios.get("/getUser", config).then((result) => {
-                console.log(result);
+
+				// provide visual cues to the user that he or she was successfully signed in
                 alertify.success(`Welcome ${result.data[0].username}`);
+
+				// clear previous value of username, if any, from localStorage
+				localStorage.removeItem("username");
+
+				// store username to local storage
+                localStorage.setItem("username", result.data[0].username);
 
                 // hide sign up aside
                 document.getElementById("loginForm").setAttribute("class", "hidden");
@@ -168,6 +171,7 @@ export default class Header extends React.Component {
 
     }
 
+	// function governing the submit button for the various sign up forms in the header
     signUpSubmit() {
 
         // DOM location for name input field
@@ -237,14 +241,22 @@ export default class Header extends React.Component {
 
             // api call to /createUser
             axios.post("/createUser", userObject).then((result) => {
-                console.log(result);
 
                 // if server returns a result but that result contains a MongoDb error message, handle that error.
                 if (result.data.hasOwnProperty("errmsg")) {
                     alertify.error(`Error." ${result.data.errmsg}` // if no error returned, handle signup procedures
                     );
                 } else {
+
+					// provide visual cues to the user
                     alertify.success(`Congrats. ${result.data.username} created.`);
+					alertify.success(`${result.data.username} signed in.`);
+
+					// if username item is present in local storage, delete it
+					localStorage.removeItem("username");
+
+					// set username to local storage
+					localStorage.setItem("username", result.data.username);
 
                     // hide sign up aside
                     document.getElementById("signUpForm").setAttribute("class", "hidden");

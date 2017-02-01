@@ -15,6 +15,16 @@ let userSchema = mongoose.Schema({
         required: true,
         trim: true
     },
+
+	temp: {
+		token: {
+			type: String,
+		},
+		secret: {
+			type: String
+		}
+	},
+	 
     userCreated: {
         type: Date,
         default: Date.now

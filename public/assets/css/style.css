@@ -160,6 +160,12 @@ nav {
 	margin-right: 10px;
 }
 
+/* ---------- Twitter Sign In Button ---------- */
+#twitterSignInButton {
+	color: white;
+	background-color: #1da1f2;
+}
+
 
 /*#layout {
     display: flex;

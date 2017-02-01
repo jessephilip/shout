@@ -15,6 +15,9 @@ import NetworkBox from "../pieces/networkbox.js";
 // import Collapsible SideLists
 import SideList from "../pieces/sidelists.js";
 
+// import Collapsible SideLists
+import TwitterSignInButton from "../pieces/TwitterSignInButton.js";
+
 // Creating the Main component
 export default class Main extends React.Component {
 
@@ -160,6 +163,9 @@ export default class Main extends React.Component {
                     <NetworkBox toggleState={this.toggleNetworkState} network={networks.pinterest}/>
                     <NetworkBox toggleState={this.toggleNetworkState} network={networks.tumbler}/>
                 </div>
+				<div>
+					<TwitterSignInButton />
+				</div>
 
             </main>
         );
