@@ -99,7 +99,7 @@ export default class Main extends React.Component {
                     this.clearNetworksSelected();
                     break;
                 case "twitter":
-                    // this.tweet();
+                    this.tweet();
                     document.getElementById("mainShout").value = "";
                     this.clearNetworksSelected();
                     break;
@@ -122,29 +122,47 @@ export default class Main extends React.Component {
     }
 
     getTweets() {
-        return new Promise((resolve, reject) => {
-            helper.getTweets("jessematherne", function(result) {
-                resolve(result);
-            });
 
+        // get current username
+        let username = localStorage.getItem("shoutUserNameLS");
+
+        // api call to getTweets. Returns a promise.
+        return new Promise((resolve, reject) => {
+
+            axios.get("/getTweets", {
+                headers: {
+                    username: username
+                }
+            }).then((result) => {
+                resolve(result);
+            }).catch((error) => {
+                reject(error);
+            });
         });
     }
 
+    // function to collect message from main shout input field and post that message to Twitter
     tweet() {
+
+        // get username
+        let username = localStorage.getItem("shoutUserNameLS");
+
         // variable for the tweet message
         let tweet = document.getElementById("mainShout").value;
-        // console.log(tweet);
 
         // check to see if user input is valid
-        if (!Boolean(tweet))
+        if (!Boolean(tweet)) {
             alertify.error("Please put in a valid tweet.");
-        else {
-
-            // post tweet
-            helper.createTweet(tweet, (result) => {
-                // console.log(result);
-                alertify.success("Sweet. Shout it Out!!!");
+        } else {
+            axios.post("/tweet", {
+                username: username,
+                message: tweet
+            }).then((result) => {
+                console.log(result);
+            }).catch((error) => {
+                console.log(error);
             });
+
         }
     }
 
@@ -167,8 +185,8 @@ export default class Main extends React.Component {
         // get username from localStorage
         let username = localStorage.getItem("shoutUserNameLS");
 
-		// run authorize function
-		networks[name.toLowerCase()].authorize(username);
+        // run authorize function
+        networks[name.toLowerCase()].authorize(username);
     }
 
     // Here we render the function

@@ -8,7 +8,7 @@ const User = require("../models/user.js");
 const axios = require("axios");
 
 // import custom tools functions
-const tools = require("../tools.js");
+const twitterTools = require("../twitterTools.js");
 
 // import express' request module
 const request = require("request");
@@ -101,57 +101,76 @@ module.exports = (app) => {
     // twitter POST routes
     app.post("/tweet", (req, res) => {
 
-        console.log(req.body);
+		console.log("/tweet hit");
 
-        //use the twitter api to post a tweet
-        client.post("statuses/update", {
-            status: req.body.msg
-        }, (error, tweet, response) => {
-            if (error)
-                console.log(error);
-            else {
-                console.log("response", response);
-                res.send(tweet);
-            }
-        });
+		// get username from client
+        let username = req.body.username;
+		let message = req.body.message;
+
+		twitterTools.newStatus(username, message).then(result => {
+			res.send(result);
+		}).catch(error => {
+			res.send(error);
+		});
     });
 
-	/* ---------- AUTHORIZE ROUTES ---------- */
+    /* ---------- AUTHORIZE ROUTES ---------- */
 
-	// authorize linkedin
-	app.post("/authorizeLinkedIn", (req, res) => {
+    // authorize linkedin
+    app.post("/authorizeLinkedIn", (req, res) => {
 
-		// get username passed in arguments
-		let username = req.body.username;
+        // get username passed in arguments
+        let username = req.body.username;
 
-		console.log("/authorizeLinkedIn username: ", username);
+        console.log("/authorizeLinkedIn username: ", username);
 
-		res.end();
-	});
+        res.end();
+    });
 
-	// authorize facebook
-	app.post("/authorizeFacebook", (req, res) => {
+    // authorize facebook
+    app.post("/authorizeFacebook", (req, res) => {
 
-		// get username passed in arguments
-		let username = req.body.username;
+        // get username passed in arguments
+        let username = req.body.username;
 
-		console.log("/authorizeFacebook username: ", username);
+        console.log("/authorizeFacebook username: ", username);
 
-		res.end();
-	});
+        res.end();
+    });
 
-	// authorize Instagram
-	app.post("/authorizeInstagram", (req, res) => {
+    // authorize Instagram
+    app.post("/authorizeInstagram", (req, res) => {
 
-		// get username passed in arguments
-		let username = req.body.username;
+        // get username passed in arguments
+        let username = req.body.username;
 
-		console.log("/authorizeInstagram username: ", username);
+        console.log("/authorizeInstagram username: ", username);
 
-		res.end();
-	});
+        res.end();
+    });
 
     // TWITTER ROUTES
+
+    app.get("/twitterCallback", (req, res) => {
+        let tokens = {
+            oauth_token: req.query.oauth_token,
+            oauth_verifier: req.query.oauth_verifier
+        };
+
+        // use oauth_token to find its matching secret
+        User.findOne({
+            "temp.token": tokens.oauth_token
+        }, (err, secret) => {
+            if (err) {
+                console.log(err);
+            } else {
+                // console.log("secret token", secret.temp.secret);
+                twitterTools.twitterGetAccessToken(secret.temp.token, secret.temp.secret, tokens.oauth_verifier);
+				res.end();
+            }
+        });
+
+    });
 
     // sign in with twitter
     app.post("/authorizeTwitter", (req, res) => {
@@ -160,16 +179,10 @@ module.exports = (app) => {
         let username = req.body.username;
 
         // get and save temporary token to database
-        tools.useNodeTWitter().then((tokens) => {
-            console.log(tokens);
+        twitterTools.twitterGetRequestToken().then((tokens) => {
+            // console.log(tokens);
 
-			const options = {
-			    method: 'GET',
-			    url: 'https://api.twitter.com/oauth/authorize?oauth_token=' + tokens.requestToken
-			};
-
-			// opn("https://api.twitter.com/oauth/authorize?oauth_token=" + tokens.requestToken);
-
+            // using User model. Update model with temporary tokens from authentication request
             User.findOneAndUpdate({
                 username: username
             }, {
@@ -183,44 +196,52 @@ module.exports = (app) => {
                 new: true,
                 upsert: true
             }, (err, updated) => {
-                if (err)
+                if (err) {
                     console.log(err);
-                console.log(updated);
-				// opn("https://twitter")
+                } else {
+                    console.log(updated);
+
+                    // use opn to open web browser. allows user to authorize Shout with twitter.
+                    opn("https://api.twitter.com/oauth/authorize?oauth_token=" + tokens.requestToken);
+
+                    res.end();
+                }
             });
+        }).catch((useNodeError) => {
+            console.log("useNodeError: ", useNodeError);
         });
     });
 
-	// authorize Google Plus
-	app.post("/authorizeGooglePlus", (req, res) => {
+    // authorize Google Plus
+    app.post("/authorizeGooglePlus", (req, res) => {
 
-		// get username passed in arguments
-		let username = req.body.username;
+        // get username passed in arguments
+        let username = req.body.username;
 
-		console.log("/authorizeGooglePlus username: ", username);
+        console.log("/authorizeGooglePlus username: ", username);
 
-		res.end();
-	});
+        res.end();
+    });
 
-	// authorize Pinterest
-	app.post("/authorizePinterest", (req, res) => {
+    // authorize Pinterest
+    app.post("/authorizePinterest", (req, res) => {
 
-		// get username passed in arguments
-		let username = req.body.username;
+        // get username passed in arguments
+        let username = req.body.username;
 
-		console.log("/authorizePinterest username: ", username);
+        console.log("/authorizePinterest username: ", username);
 
-		res.end();
-	});
+        res.end();
+    });
 
-	// authorize tumblr
-	app.post("/authorizeTumblr", (req, res) => {
+    // authorize tumblr
+    app.post("/authorizeTumblr", (req, res) => {
 
-		// get username passed in arguments
-		let username = req.body.username;
+        // get username passed in arguments
+        let username = req.body.username;
 
-		console.log("/authorizeTumblr username: ", username);
+        console.log("/authorizeTumblr username: ", username);
 
-		res.end();
-	});
+        res.end();
+    });
 }
