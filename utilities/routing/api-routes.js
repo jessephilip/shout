@@ -112,10 +112,31 @@ module.exports = (app) => {
         });
     });
 
+	// authorize linkedin
+	app.post("/authorizeLinkedIn", (req, res) => {
+
+		// get username passed in arguments
+		let username = req.body.username;
+	});
+
+	// authorize facebook
+	app.post("/authorizeFacebook", (req, res) => {
+
+		// get username passed in arguments
+		let username = req.body.username;
+	});
+
+	// authorize Instagram
+	app.post("/authorizeInstagram", (req, res) => {
+
+		// get username passed in arguments
+		let username = req.body.username;
+	});
+
     // TWITTER ROUTES
 
     // sign in with twitter
-    app.post("/autorizeTwitter", (req, res) => {
+    app.post("/authorizeTwitter", (req, res) => {
 
         // get username passed in arguments
         let username = req.body.username;
@@ -151,4 +172,25 @@ module.exports = (app) => {
             });
         });
     });
+
+	// authorize Google Plus
+	app.post("/authorizeGooglePlus", (req, res) => {
+
+		// get username passed in arguments
+		let username = req.body.username;
+	});
+
+	// authorize Pinterest
+	app.post("/authorizePinterest", (req, res) => {
+
+		// get username passed in arguments
+		let username = req.body.username;
+	});
+
+	// authorize tumblr
+	app.post("/authorizeTumblr", (req, res) => {
+
+		// get username passed in arguments
+		let username = req.body.username;
+	});
 }

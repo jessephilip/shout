@@ -6,12 +6,15 @@ export default class Header extends React.Component {
 
     constructor() {
         super();
-        this.state = { };
+        this.state = {};
         this.sideBarToggle = this.sideBarToggle.bind(this);
         this.loginClick = this.loginClick.bind(this);
         this.loginSubmit = this.loginSubmit.bind(this);
         this.signUpClick = this.signUpClick.bind(this);
         this.signUpSubmit = this.signUpSubmit.bind(this);
+		this.optionsClick = this.optionsClick.bind(this);
+		this.signoutClick = this.signoutClick.bind(this);
+		this.backClick = this.backClick.bind(this);
         this.login = {};
         this.signUp = {};
     }
@@ -46,15 +49,33 @@ export default class Header extends React.Component {
                 this.signUpSubmit();
             }
         };
+
+        // get username from localStorage
+        let username = localStorage.getItem("shoutUserNameLS");
+
+        // check if user was previously signed in
+		//TODO: set this up as an option in the database. Only allow automatic login if that option is selected.
+        if (username) {
+
+			// if user was previously logged in, hide login and signup buttons and provide welcome message to user
+
+            // hide the login and signup buttons
+            document.getElementById("loginDiv").setAttribute("class", "hidden");
+
+            // show signed in aside
+            document.getElementById("signedInAside").setAttribute("class", "show");
+
+            alertify.success(`Welcome ${username}.`);
+        }
     }
 
-	// opens the sidebar containing the recent posts for each network
+    // opens the sidebar containing the recent posts for each network
     sideBarToggle() {
 
-		// get open status of the sidebar
+        // get open status of the sidebar
         let open = document.getElementById("sideBar").getAttribute("data-open");
 
-		// if sidebar closed, open it, and vice-versa
+        // if sidebar closed, open it, and vice-versa
         if (open === "false") {
             document.getElementById("sideBar").style.left = "0px";
             document.getElementById("sideBar").setAttribute("data-open", true);
@@ -78,6 +99,7 @@ export default class Header extends React.Component {
         document.getElementById("loginUsername").focus();
     }
 
+    // click listener for signup button
     signUpClick() {
 
         // hide the login and signup buttons
@@ -147,14 +169,14 @@ export default class Header extends React.Component {
             // api-call to /getUser
             axios.get("/getUser", config).then((result) => {
 
-				// provide visual cues to the user that he or she was successfully signed in
+                // provide visual cues to the user that he or she was successfully signed in
                 alertify.success(`Welcome ${result.data[0].username}`);
 
-				// clear previous value of username, if any, from localStorage
-				localStorage.removeItem("username");
+                // clear previous value of username, if any, from localStorage
+                localStorage.removeItem("shoutUserNameLS");
 
-				// store username to local storage
-                localStorage.setItem("username", result.data[0].username);
+                // store username to local storage
+                localStorage.setItem("shoutUserNameLS", result.data[0].username);
 
                 // hide sign up aside
                 document.getElementById("loginForm").setAttribute("class", "hidden");
@@ -171,7 +193,7 @@ export default class Header extends React.Component {
 
     }
 
-	// function governing the submit button for the various sign up forms in the header
+    // function governing the submit button for the various sign up forms in the header
     signUpSubmit() {
 
         // DOM location for name input field
@@ -248,15 +270,15 @@ export default class Header extends React.Component {
                     );
                 } else {
 
-					// provide visual cues to the user
+                    // provide visual cues to the user
                     alertify.success(`Congrats. ${result.data.username} created.`);
-					alertify.success(`${result.data.username} signed in.`);
+                    alertify.success(`${result.data.username} signed in.`);
 
-					// if username item is present in local storage, delete it
-					localStorage.removeItem("username");
+                    // if username item is present in local storage, delete it
+                    localStorage.removeItem("shoutUserNameLS");
 
-					// set username to local storage
-					localStorage.setItem("username", result.data.username);
+                    // set username to local storage
+                    localStorage.setItem("shoutUserNameLS", result.data.username);
 
                     // hide sign up aside
                     document.getElementById("signUpForm").setAttribute("class", "hidden");
@@ -272,6 +294,42 @@ export default class Header extends React.Component {
 
     }
 
+	optionsClick() {
+		console.log("options click");
+
+		// hide sign up aside
+		document.getElementById("signedInAside").setAttribute("class", "hidden");
+
+		// show signed in aside
+		document.getElementById("optionsAside").setAttribute("class", "show");
+	}
+
+	backClick() {
+
+		// hide sign up aside
+		document.getElementById("optionsAside").setAttribute("class", "hidden");
+
+		// show signed in aside
+		document.getElementById("signedInAside").setAttribute("class", "show");
+
+	}
+
+	signoutClick() {
+		console.log("options click");
+
+		// remove username from localStorage
+		localStorage.removeItem("shoutUserNameLS");
+
+		// hide sign up aside
+		document.getElementById("optionsAside").setAttribute("class", "hidden");
+
+		// show signed in aside
+		document.getElementById("loginDiv").setAttribute("class", "show");
+
+		// provide visual cue to user
+		alertify.success("Signed Out");
+	}
+
     // Here we render the function
     render() {
         return (
@@ -279,7 +337,8 @@ export default class Header extends React.Component {
                 <button className="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
                 </button>
-                <a id="brand" className="navbar-brand" onClick={this.sideBarToggle} data-toggle="tooltip" data-placement="right" title="Open Drawer">Shout</a>
+                <a id="brand" className="navbar-brand" onClick={this.sideBarToggle} data-toggle="tooltip" data-placement="right" title="Open Drawer"><i className="fa fa-bullhorn fa-2x"></i></a>
+				<h1>Shout</h1>
                 <aside id="loginDiv">
                     <button id="loginButton" className="btn btn-outline-primary" onClick={this.loginClick}>Login</button>
                     <button id="signUpButton" className="btn btn-outline-primary" onClick={this.signUpClick}>Sign Up</button>
@@ -298,10 +357,17 @@ export default class Header extends React.Component {
                 <aside id="signedInAside" className="hidden">
                     <div>
                         <span>
-                            <i className="fa fa-user fa-2x"></i>
+                            <a onClick={this.optionsClick}><i className="fa fa-user fa-2x" data-toggle="tooltip" data-placement="left" title="user options"></i></a>
                         </span>
                     </div>
                 </aside>
+				<aside id="optionsAside" className="hidden">
+					<div>
+						<a><i className="fa fa-cloud fa-2x" data-toggle="tooltip" data-placement="bottom" title="authorize" onClick={this.props.transform}></i></a>
+						<a><i className="fa fa-sign-out fa-2x" data-toggle="tooltip" data-placement="bottom" title="signout" onClick={this.signoutClick}></i></a>
+						<a><i className="fa fa-chevron-right fa-2x" data-toggle="tooltip" data-placement="bottom" title="back" onClick={this.backClick}></i></a>
+					</div>
+				</aside>
             </nav>
         );
     }

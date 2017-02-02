@@ -32,14 +32,33 @@ export default class Main extends React.Component {
         this.tweet = this.tweet.bind(this);
         this.toggleNetworkState = this.toggleNetworkState.bind(this);
         this.shout = this.shout.bind(this);
-		this.clearNetworksSelected = this.clearNetworksSelected.bind(this);
+        this.clearNetworksSelected = this.clearNetworksSelected.bind(this);
+        this.authorizeNetworkBox = this.authorizeNetworkBox.bind(this);
     }
 
     componentDidMount() {
-		console.log("main did mount");
+        console.log("main did mount");
 
-		// give main shout input field the focus
-		document.getElementById("mainShout").focus();
+        // give main shout input field the focus
+        document.getElementById("mainShout").focus();
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        console.log(this.props.change);
+        console.log("main prevProps: ", prevProps);
+        console.log("main prevState: ", prevState);
+
+        if (this.props.change) {
+
+            // hide main shout input field
+            document.getElementById("mainShoutDiv").setAttribute("class", "hidden");
+
+            // hide socialNetworks boxes
+            document.getElementById("socialChecks").setAttribute("class", "hidden");
+
+            // hide socialNetworks boxes
+            document.getElementById("socialAuthorization").setAttribute("class", "show");
+        }
     }
 
     toggleNetworkState(newState, bool) {
@@ -72,32 +91,32 @@ export default class Main extends React.Component {
 
                 case "linkedin":
                     alertify.success("Posting linkedIn message.");
-					this.clearNetworksSelected();
+                    this.clearNetworksSelected();
                     break;
                 case "facebook":
                     alertify.success("Posting FaceBook message.");
-					this.clearNetworksSelected();
+                    this.clearNetworksSelected();
                     break;
                 case "instagram":
                     alertify.success("Posting Instagram message.");
-					this.clearNetworksSelected();
+                    this.clearNetworksSelected();
                     break;
                 case "twitter":
-					// this.tweet();
+                    // this.tweet();
                     document.getElementById("mainShout").value = "";
-					this.clearNetworksSelected();
+                    this.clearNetworksSelected();
                     break;
                 case "googleplus":
                     alertify.success("Posting Google Plus message.");
-					this.clearNetworksSelected();
+                    this.clearNetworksSelected();
                     break;
                 case "pinterest":
                     alertify.success("Posting to pinterest board.");
-					this.clearNetworksSelected();
+                    this.clearNetworksSelected();
                     break;
-                case "tumbler":
-                    alertify.success("Posting to Tumbler.");
-					this.clearNetworksSelected();
+                case "tumblr":
+                    alertify.success("Posting to Tumblr.");
+                    this.clearNetworksSelected();
                     break;
                 default:
                     alertify.error("Error. Tried to post to: " + this.state.postStatus[i] + ".");
@@ -132,13 +151,56 @@ export default class Main extends React.Component {
         }
     }
 
-	clearNetworksSelected() {
-		let targets = document.getElementsByClassName("networkBox");
-		for (var i = 0; i < targets.length; i++) {
-			targets[i].setAttribute("data-selected", false);
-			targets[i].style.color = "#695d46";
-		}
-	}
+    clearNetworksSelected() {
+        let targets = document.getElementsByClassName("networkBox");
+        for (var i = 0; i < targets.length; i++) {
+            targets[i].setAttribute("data-selected", false);
+            targets[i].style.color = "#695d46";
+        }
+    }
+
+    authorizeNetworkBox(e) {
+
+        // get data-name attribute
+        let target = e.target;
+
+        // variable to hold network name
+        let name = target.getAttribute("data-name");
+
+        // get username from localStorage
+        let username = localStorage.getItem("shoutUserNameLS");
+
+        switch (name.toLowerCase()) {
+
+            case "linkedin":
+
+                break;
+            case "facebook":
+
+                break;
+            case "instagram":
+
+                break;
+            case "twitter":
+
+                // run authorize function
+                networks[name.toLowerCase()].authorize(username);
+
+                break;
+            case "googleplus":
+
+                break;
+            case "pinterest":
+
+                break;
+            case "tumblr":
+
+                break;
+            default:
+                console.log("error");
+
+        }
+    }
 
     // Here we render the function
     render() {
@@ -150,7 +212,7 @@ export default class Main extends React.Component {
                     <SideList name="Tweets" tweets={this.state.tweets}/>
                 </aside>
 
-                <div>
+                <div id="mainShoutDiv">
                     <input id="mainShout" placeholder="type your shout here"/>
                     <button className="btn btn-primary bg-accent text-bg-main" onClick={this.shout}>Shout</button>
                 </div>
@@ -161,11 +223,39 @@ export default class Main extends React.Component {
                     <NetworkBox toggleState={this.toggleNetworkState} network={networks.twitter}/>
                     <NetworkBox toggleState={this.toggleNetworkState} network={networks.googleplus}/>
                     <NetworkBox toggleState={this.toggleNetworkState} network={networks.pinterest}/>
-                    <NetworkBox toggleState={this.toggleNetworkState} network={networks.tumbler}/>
+                    <NetworkBox toggleState={this.toggleNetworkState} network={networks.tumblr}/>
                 </div>
-				<div>
-					<TwitterSignInButton />
-				</div>
+                <div id="socialAuthorization" className="hidden">
+                    <h2>Authorize Social Networks</h2>
+                    <p>Click the below buttons to authorize Shout to make and read posts on your behalf.</p>
+                    <br/>
+                    <div>
+                        <a onClick={this.authorizeNetworkBox}>
+                            <i data-name="LinkedIn" className="fa fa-linkedin-square fa-3x hvr-grow"></i>
+                        </a>
+                        <a onClick={this.authorizeNetworkBox}>
+                            <i data-name="Facebook" className="fa fa-facebook-square fa-3x hvr-grow"></i>
+                        </a>
+                        <a onClick={this.authorizeNetworkBox}>
+                            <i data-name="Instagram" className="fa fa-instagram fa-3x hvr-grow"></i>
+                        </a>
+                        <a onClick={this.authorizeNetworkBox}>
+                            <i data-name="Twitter" className="fa fa-twitter-square fa-3x hvr-grow"></i>
+                        </a>
+                        <a onClick={this.authorizeNetworkBox}>
+                            <i data-name="GooglePlus" className="fa fa-google-plus-square fa-3x hvr-grow"></i>
+                        </a>
+                        <a onClick={this.authorizeNetworkBox}>
+                            <i data-name="Pinterest" className="fa fa-pinterest-square fa-3x hvr-grow"></i>
+                        </a>
+                        <a onClick={this.authorizeNetworkBox}>
+                            <i data-name="Tumblr" className="fa fa-tumblr-square fa-3x hvr-grow"></i>
+                        </a>
+                    </div>
+                </div>
+                <div>
+                    {/* <TwitterSignInButton /> */}
+                </div>
 
             </main>
         );

@@ -54,7 +54,7 @@ export default class SideLists extends React.Component {
                         </li>
                         <li className="nav-item">
                             <a className="nav-link" onClick={this.props.clicked}>
-                                <i className="fa fa-tumblr-square" value="tumbler"></i>
+                                <i className="fa fa-tumblr-square" value="tumblr"></i>
                             </a>
                         </li>
                     </ul>

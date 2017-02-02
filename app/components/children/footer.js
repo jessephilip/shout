@@ -7,7 +7,7 @@ export default class Footer extends React.Component {
     // Here we render the function
     render() {
         return (
-			<footer className="bg-accent text-center">This is the footer</footer>
+			<footer className="bg-accent text-center">&copy; 2017</footer>
         );
     }
 }

@@ -160,6 +160,26 @@ nav {
 	margin-right: 10px;
 }
 
+/* ---------- Options Aside ---------- */
+#optionsAside .fa-cloud, .fa-sign-out {
+	margin: 0 10px;
+}
+
+/* ---------- Authorization Squares ---------- */
+#socialAuthorization {
+	flex-direction: column;
+	text-align: center;
+}
+
+#socialAuthorization .fa {
+	padding: 0 10px;
+}
+
+#individualAuthorization {
+	flex-direction: column;
+	text-align: center;
+}
+
 /* ---------- Twitter Sign In Button ---------- */
 #twitterSignInButton {
 	color: white;

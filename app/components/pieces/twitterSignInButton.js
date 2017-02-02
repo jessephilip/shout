@@ -13,7 +13,7 @@ export default class TwitterSignInButton extends React.Component {
     authorizeTwitter() {
 
 		// get username from localStorage
-		let username = localStorage.getItem("username");
+		let username = localStorage.getItem("shoutUserNameLS");
 
         axios.post("/authorizeTwitter", {username: username}).then((result) => {
             console.log(result);
