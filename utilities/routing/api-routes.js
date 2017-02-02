@@ -1,16 +1,20 @@
 // import twitter connection
 const client = require("../connections/twitter.js");
+
+// import Mongoose User Schema
 const User = require("../models/user.js");
 
+// import axios
 const axios = require("axios");
 
+// import custom tools functions
 const tools = require("../tools.js");
 
+// import express' request module
 const request = require("request");
 
-
 // import opn
-var opn = require("opn");
+const opn = require("opn");
 
 // export routes to go to server.js
 module.exports = (app) => {
@@ -112,11 +116,17 @@ module.exports = (app) => {
         });
     });
 
+	/* ---------- AUTHORIZE ROUTES ---------- */
+
 	// authorize linkedin
 	app.post("/authorizeLinkedIn", (req, res) => {
 
 		// get username passed in arguments
 		let username = req.body.username;
+
+		console.log("/authorizeLinkedIn username: ", username);
+
+		res.end();
 	});
 
 	// authorize facebook
@@ -124,6 +134,10 @@ module.exports = (app) => {
 
 		// get username passed in arguments
 		let username = req.body.username;
+
+		console.log("/authorizeFacebook username: ", username);
+
+		res.end();
 	});
 
 	// authorize Instagram
@@ -131,6 +145,10 @@ module.exports = (app) => {
 
 		// get username passed in arguments
 		let username = req.body.username;
+
+		console.log("/authorizeInstagram username: ", username);
+
+		res.end();
 	});
 
     // TWITTER ROUTES
@@ -178,6 +196,10 @@ module.exports = (app) => {
 
 		// get username passed in arguments
 		let username = req.body.username;
+
+		console.log("/authorizeGooglePlus username: ", username);
+
+		res.end();
 	});
 
 	// authorize Pinterest
@@ -185,6 +207,10 @@ module.exports = (app) => {
 
 		// get username passed in arguments
 		let username = req.body.username;
+
+		console.log("/authorizePinterest username: ", username);
+
+		res.end();
 	});
 
 	// authorize tumblr
@@ -192,5 +218,9 @@ module.exports = (app) => {
 
 		// get username passed in arguments
 		let username = req.body.username;
+
+		console.log("/authorizeTumblr username: ", username);
+
+		res.end();
 	});
 }

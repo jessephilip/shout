@@ -17,15 +17,15 @@ export default class Layout extends React.Component {
     }
 
     componentDidMount() {
-        console.log("layout did mount");
+        // console.log("layout did mount");
     }
 
     componentDidUpdate() {
-        console.log("layout did update");
+        // console.log("layout did update");
     }
 
     transform() {
-        console.log("transform pushed");
+        // console.log("transform pushed");
         if (this.state.change) {
             this.setState({change: false});
         } else {

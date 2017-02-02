@@ -15,9 +15,6 @@ import NetworkBox from "../pieces/networkbox.js";
 // import Collapsible SideLists
 import SideList from "../pieces/sidelists.js";
 
-// import Collapsible SideLists
-import TwitterSignInButton from "../pieces/TwitterSignInButton.js";
-
 // Creating the Main component
 export default class Main extends React.Component {
 
@@ -37,16 +34,16 @@ export default class Main extends React.Component {
     }
 
     componentDidMount() {
-        console.log("main did mount");
+        // console.log("main did mount");
 
         // give main shout input field the focus
         document.getElementById("mainShout").focus();
     }
 
     componentDidUpdate(prevProps, prevState) {
-        console.log(this.props.change);
-        console.log("main prevProps: ", prevProps);
-        console.log("main prevState: ", prevState);
+        // console.log(this.props.change);
+        // console.log("main prevProps: ", prevProps);
+        // console.log("main prevState: ", prevState);
 
         if (this.props.change) {
 
@@ -64,12 +61,12 @@ export default class Main extends React.Component {
     toggleNetworkState(newState, bool) {
         // console.log(newState, bool);
         let present = this.state.postStatus;
-        console.log(present);
+        // console.log(present);
 
         // add newState to array if boolean is true and it is not already in the array
         if (bool && present.indexOf(newState) === -1) {
             present.push(newState);
-            console.log(present);
+            // console.log(present);
             this.setState({postStatus: present});
         }
 
@@ -77,7 +74,7 @@ export default class Main extends React.Component {
         if (!bool && present.indexOf(newState) >= 0) {
             present.splice(present.indexOf(newState), 1);
             this.setState({postStatus: present});
-            console.log(present);
+            // console.log(present);
         }
     }
 
@@ -136,7 +133,7 @@ export default class Main extends React.Component {
     tweet() {
         // variable for the tweet message
         let tweet = document.getElementById("mainShout").value;
-        console.log(tweet);
+        // console.log(tweet);
 
         // check to see if user input is valid
         if (!Boolean(tweet))
@@ -145,7 +142,7 @@ export default class Main extends React.Component {
 
             // post tweet
             helper.createTweet(tweet, (result) => {
-                console.log(result);
+                // console.log(result);
                 alertify.success("Sweet. Shout it Out!!!");
             });
         }
@@ -170,36 +167,8 @@ export default class Main extends React.Component {
         // get username from localStorage
         let username = localStorage.getItem("shoutUserNameLS");
 
-        switch (name.toLowerCase()) {
-
-            case "linkedin":
-
-                break;
-            case "facebook":
-
-                break;
-            case "instagram":
-
-                break;
-            case "twitter":
-
-                // run authorize function
-                networks[name.toLowerCase()].authorize(username);
-
-                break;
-            case "googleplus":
-
-                break;
-            case "pinterest":
-
-                break;
-            case "tumblr":
-
-                break;
-            default:
-                console.log("error");
-
-        }
+		// run authorize function
+		networks[name.toLowerCase()].authorize(username);
     }
 
     // Here we render the function

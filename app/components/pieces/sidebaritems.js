@@ -14,7 +14,7 @@ export default class SideLists extends React.Component {
     }
 
     componentDidUpdate() {
-        console.log("sidebaritemsDidUpdate");
+        // console.log("sidebaritemsDidUpdate");
     }
 
     render() {

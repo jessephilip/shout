@@ -295,7 +295,7 @@ export default class Header extends React.Component {
     }
 
 	optionsClick() {
-		console.log("options click");
+		// console.log("options click");
 
 		// hide sign up aside
 		document.getElementById("signedInAside").setAttribute("class", "hidden");
@@ -315,7 +315,7 @@ export default class Header extends React.Component {
 	}
 
 	signoutClick() {
-		console.log("options click");
+		// console.log("options click");
 
 		// remove username from localStorage
 		localStorage.removeItem("shoutUserNameLS");

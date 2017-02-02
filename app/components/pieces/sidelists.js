@@ -22,7 +22,7 @@ export default class SideLists extends React.Component {
 
 	setTweets() {
 		this.getTweets().then( (tweets) => {
-			console.log(tweets);
+			// console.log(tweets);
 			this.setState({messages: tweets});
 		});
 	}
@@ -30,7 +30,7 @@ export default class SideLists extends React.Component {
 	getTweets() {
 		return new Promise( (resolve, reject) => {
 			helper.getTweets("jessematherne", function(result) {
-				console.log(result);
+				// console.log(result);
 				 resolve(result.data);
 			});
 
@@ -42,7 +42,7 @@ export default class SideLists extends React.Component {
 		switch (e.target.getAttribute("value")) {
 
 			case "twitter":
-				console.log("twittering");
+				// console.log("twittering");
 				this.setTweets();
 			break;
 
