@@ -1,9 +1,6 @@
 // Include React
 import React from "react";
 
-// import twitter helper
-import helper from "../../../utilities/helpers/helper.js";
-
 // import SideBarItems
 import SideBarItems from "./sidebaritems.js";
 
@@ -13,49 +10,62 @@ export default class SideLists extends React.Component {
     constructor() {
         super();
         this.state = {
-            numbers: [1, 2, 3, 4, 5],
-			messages: []
+            messages: []
         };
-		this.getTweets = this.getTweets.bind(this);
-		this.getClicked = this.getClicked.bind(this);
+        this.getTweets = this.getTweets.bind(this);
+        this.setTweets = this.setTweets.bind(this);
+        this.getClicked = this.getClicked.bind(this);
     }
 
-	setTweets() {
-		this.getTweets().then( (tweets) => {
-			// console.log(tweets);
-			this.setState({messages: tweets});
-		});
-	}
+    setTweets() {
 
-	getTweets() {
-		return new Promise( (resolve, reject) => {
-			helper.getTweets("jessematherne", function(result) {
-				// console.log(result);
-				 resolve(result.data);
-			});
+        this.getTweets().then((tweets) => {
+            // console.log(tweets);
+            this.setState({messages: tweets.data});
+        });
+    }
 
-		});
-	}
+    getTweets() {
+        return new Promise(function(resolve, reject) {
 
-	getClicked(e) {
+            // get current username
+            let username = localStorage.getItem("shoutUserNameLS");
 
-		switch (e.target.getAttribute("value")) {
+            // prepare custom headers
+            let options = {
+                headers: {
+                    username: username
+                }
+            };
 
-			case "twitter":
-				// console.log("twittering");
-				this.setTweets();
-			break;
+            // api call to getTweets. Returns a promise.
+            axios.get("/getTweets", options).then((result) => {
+                resolve (result);
+            }).catch((error) => {
+                reject (error);
+            });
+        });
+    }
 
-			default:
-				console.log("Error in switch statement.");
+    getClicked(e) {
 
-		}
-	}
+        switch (e.target.getAttribute("value")) {
+
+            case "twitter":
+                // console.log("twittering");
+                this.setTweets();
+                break;
+
+            default:
+                console.log("Error in switch statement.");
+
+        }
+    }
 
     render() {
         return (
             <section id="sideBarContent">
-				<SideBarItems messages={this.state.messages} clicked={this.getClicked}/>
+                <SideBarItems messages={this.state.messages} clicked={this.getClicked}/>
             </section>
         );
     }

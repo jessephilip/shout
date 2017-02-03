@@ -25,7 +25,6 @@ export default class Main extends React.Component {
             postStatus: [],
             tweets: []
         };
-        this.getTweets = this.getTweets.bind(this);
         this.tweet = this.tweet.bind(this);
         this.toggleNetworkState = this.toggleNetworkState.bind(this);
         this.shout = this.shout.bind(this);
@@ -119,26 +118,6 @@ export default class Main extends React.Component {
                     alertify.error("Error. Tried to post to: " + this.state.postStatus[i] + ".");
             }
         }
-    }
-
-    getTweets() {
-
-        // get current username
-        let username = localStorage.getItem("shoutUserNameLS");
-
-        // api call to getTweets. Returns a promise.
-        return new Promise((resolve, reject) => {
-
-            axios.get("/getTweets", {
-                headers: {
-                    username: username
-                }
-            }).then((result) => {
-                resolve(result);
-            }).catch((error) => {
-                reject(error);
-            });
-        });
     }
 
     // function to collect message from main shout input field and post that message to Twitter

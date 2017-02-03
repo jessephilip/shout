@@ -27,7 +27,7 @@ require ("./utilities/routing/api-routes.js")(app);
 const mongoose = require ("mongoose");
 
 // setup mongoose connection
-mongoose.connect("mongodb://localhost/test");
+mongoose.connect("mongodb://localhost/shout");
 const db = mongoose.connection;
 
 // handle error upon connection

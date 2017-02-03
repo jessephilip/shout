@@ -90,18 +90,24 @@ module.exports = (app) => {
 
     // twitter GET routes
     app.get("/getTweets", (req, res) => {
+		console.log("/getTweets hit");
 
-        // use the twitter api to get the current user's tweets
-        client.get('statuses/user_timeline', req.params, (error, tweets, response) => {
-            res.send(tweets);
+		let username = req.headers.username;
 
-        });
+		// get user's home timeline
+		twitterTools.getUserTimeline(username).then(timeline => {
+			console.log("/getTweets results: ", timeline);
+			res.send(timeline);
+		}).catch(timelineError => {
+			console.log("/getTweets error", error);
+			res.send(timelineError);
+		});
     });
 
     // twitter POST routes
     app.post("/tweet", (req, res) => {
 
-		console.log("/tweet hit");
+		// console.log("/tweet hit");
 
 		// get username from client
         let username = req.body.username;
@@ -162,11 +168,18 @@ module.exports = (app) => {
             "temp.token": tokens.oauth_token
         }, (err, secret) => {
             if (err) {
-                console.log(err);
+                console.log("Error looking up user by temp.token: ", err);
             } else {
                 // console.log("secret token", secret.temp.secret);
-                twitterTools.twitterGetAccessToken(secret.temp.token, secret.temp.secret, tokens.oauth_verifier);
-				res.end();
+				// capture user's shout username
+				let username = secret.username;
+                twitterTools.twitterGetAccessToken(secret.temp.token, secret.temp.secret, tokens.oauth_verifier).then(result => {
+					twitterTools.getAccountDetails(username).then(details => {
+					return details;
+					});
+
+				})
+
             }
         });
 

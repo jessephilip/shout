@@ -15,14 +15,17 @@ let userSchema = mongoose.Schema({
         required: true,
         trim: true
     },
-    accessTokens: {
+    credentials: {
         twitter: {
             accessToken: {
                 type: String
             },
             accessTokenSecret: {
                 type: String
-            }
+            },
+			screen_name: {
+				type: String
+			}
         },
 
         linkedin: {
