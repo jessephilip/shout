@@ -2,7 +2,7 @@
 const twitterAPI = require("node-twitter-api");
 
 // setup twitterAPI
-let twitter = new twitterAPI({consumerKey: process.env.TWITTER_CONSUMER_KEY, consumerSecret: process.env.TWITTER_CONSUMER_SECRET, callback: process.env.HOME + /twitterCallback"});
+let twitter = new twitterAPI({consumerKey: process.env.TWITTER_CONSUMER_KEY, consumerSecret: process.env.TWITTER_CONSUMER_SECRET, callback: process.env.HOME + "/twitterCallback"});
 
 // import User model
 const User = require("./models/user.js");
