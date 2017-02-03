@@ -27,7 +27,7 @@ require ("./utilities/routing/api-routes.js")(app);
 const mongoose = require ("mongoose");
 
 // setup mongoose connection
-mongoose.connect("mongodb://<dbuser>:<dbpassword>@ds139869.mlab.com:39869/heroku_b0xgmkts");
+mongoose.connect("mongodb://localhost/shout");
 const db = mongoose.connection;
 
 // handle error upon connection
