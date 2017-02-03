@@ -175,7 +175,7 @@ module.exports = (app) => {
 				let username = secret.username;
                 twitterTools.twitterGetAccessToken(secret.temp.token, secret.temp.secret, tokens.oauth_verifier).then(result => {
 					twitterTools.getAccountDetails(username).then(details => {
-					return details;
+					res.send(details);
 					});
 
 				})
@@ -210,9 +210,9 @@ module.exports = (app) => {
                 upsert: true
             }, (err, updated) => {
                 if (err) {
-                    console.log(err);
+                    console.log("getRequestToken find user error: ", err);
                 } else {
-                    console.log(updated);
+                    console.log("getRequestToken find user results: ", updated);
 
                     // use opn to open web browser. allows user to authorize Shout with twitter.
                     opn("https://api.twitter.com/oauth/authorize?oauth_token=" + tokens.requestToken);
@@ -221,7 +221,7 @@ module.exports = (app) => {
                 }
             });
         }).catch((useNodeError) => {
-            console.log("useNodeError: ", useNodeError);
+            console.log("getRequestToken error: ", useNodeError);
         });
     });
 

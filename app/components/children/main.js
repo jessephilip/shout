@@ -137,9 +137,9 @@ export default class Main extends React.Component {
                 username: username,
                 message: tweet
             }).then((result) => {
-                console.log(result);
+                console.log("/tweet result: ", result);
             }).catch((error) => {
-                console.log(error);
+                console.log("/tweet error: ", error);
             });
 
         }

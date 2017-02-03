@@ -1,8 +1,11 @@
 // import twitterAPI
 const twitterAPI = require("node-twitter-api");
 
+let callback = process.env.HOME + "/twitterCallback";
+console.log(callback);
+
 // setup twitterAPI
-let twitter = new twitterAPI({consumerKey: process.env.TWITTER_CONSUMER_KEY, consumerSecret: process.env.TWITTER_CONSUMER_SECRET, callback: process.env.HOME + "/twitterCallback"});
+let twitter = new twitterAPI({consumerKey: process.env.TWITTER_CONSUMER_KEY, consumerSecret: process.env.TWITTER_CONSUMER_SECRET, callback: process.env.CALLBACK});
 
 // import User model
 const User = require("./models/user.js");
@@ -12,6 +15,7 @@ module.exports = {
     /* ---------- AUTHORIZATION TOOLS ---------- */
 
     twitterGetRequestToken: () => {
+		console.log("twitterGetRequestToken hit.");
 
         // set up promise that uses node-twitter-api to get request token for authentication process
         return new Promise(function(resolve, reject) {
@@ -19,6 +23,7 @@ module.exports = {
             // use node-twitter-api to get request token for authentication process
             twitter.getRequestToken(function(error, requestToken, requestTokenSecret, results) {
                 if (error) {
+					console.log("getRequestToken error: ", error)
                     reject(error);
                 } else {
                     const token = {
@@ -59,8 +64,8 @@ module.exports = {
                         new: true
                     }, (err, updated) => {
                         if (err) {
-                            console.log(err);
-                            reject(error);
+                            console.log("getAccessToken find user error: ", err);
+                            reject(err);
                         } else {
                             console.log(updated);
                             resolve(updated);
@@ -94,6 +99,7 @@ module.exports = {
                     if (error) {
                         // something went wrong
                         if (error) {
+							console.log("statuses update error: ", error)
                             reject(error);
                         }
                     } else {
@@ -126,6 +132,7 @@ module.exports = {
                     if (error) {
                         // something went wrong
                         if (error) {
+							console.log("getTimeline error: ", error);
                             reject(error);
                         }
                     } else {

@@ -287,7 +287,7 @@ export default class Header extends React.Component {
                     document.getElementById("signedInAside").setAttribute("class", "show");
                 }
             }).catch((error) => {
-                console.log(error);
+                console.log("createUser error: ", error);
             });
 
         }
