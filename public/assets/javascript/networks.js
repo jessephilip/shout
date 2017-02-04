@@ -26,6 +26,7 @@ module.exports = {
 		authorize: (username) => {
 			axios.post("/authorizeTwitter", {username: username}).then( (authorizeResult) => {
 				console.log("/authorizeTwitter success: ", authorizeResult);
+				window.open("https://api.twitter.com/oauth/authorize?oauth_token=" + authorizeResult.data.temp.token);
 			}).catch( (authorizeError) => {
 				console.log("/authorizeTwitter error: ", authorizeError);
 			});

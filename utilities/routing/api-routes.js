@@ -217,7 +217,7 @@ module.exports = (app) => {
                     // use opn to open web browser. allows user to authorize Shout with twitter.
                     // opn("https://api.twitter.com/oauth/authorize?oauth_token=" + tokens.requestToken);
 
-                    res.end();
+                    res.send(updated);
                 }
             });
         }).catch((useNodeError) => {

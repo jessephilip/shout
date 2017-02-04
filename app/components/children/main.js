@@ -219,9 +219,6 @@ export default class Main extends React.Component {
                         </a>
                     </div>
                 </div>
-                <div>
-                    {/* <TwitterSignInButton /> */}
-                </div>
 
             </main>
         );
