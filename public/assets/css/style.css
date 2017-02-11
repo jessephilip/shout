@@ -129,11 +129,18 @@ main {
 #sideBar {
 	position: absolute;
 	padding-top: 56px;
+	padding-bottom: 56px;
 	left: -33%;
 	width: 33%;
 	top: 0;
 	height: 100%;
 	transition: 1s;
+	overflow-y: scroll;
+}
+
+#navOutput {
+	padding-left: 1vw;
+	padding-right: 1vw;
 }
 
 .tooltip-inner {

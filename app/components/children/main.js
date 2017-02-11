@@ -4,10 +4,7 @@
 import React from "react";
 
 // import networks
-import networks from "../../../public/assets/javascript/networks.js";
-
-// import twitter helper
-import helper from "../../../utilities/helpers/helper.js";
+import networks from "../../../public/assets/minified/networks.min.js";
 
 // import CheckBox
 import NetworkBox from "../pieces/networkbox.js";
