@@ -6,20 +6,23 @@ export default class Header extends React.Component {
 
     constructor() {
         super();
-        this.state = {};
+        this.state = {
+			username: ""
+		};
         this.sideBarToggle = this.sideBarToggle.bind(this);
         this.loginClick = this.loginClick.bind(this);
         this.loginSubmit = this.loginSubmit.bind(this);
         this.signUpClick = this.signUpClick.bind(this);
         this.signUpSubmit = this.signUpSubmit.bind(this);
-		this.optionsClick = this.optionsClick.bind(this);
-		this.signoutClick = this.signoutClick.bind(this);
-		this.backClick = this.backClick.bind(this);
+        this.optionsClick = this.optionsClick.bind(this);
+        this.signoutClick = this.signoutClick.bind(this);
+        this.backClick = this.backClick.bind(this);
         this.login = {};
         this.signUp = {};
     }
 
     componentDidMount() {
+		// console.log("header did mount");
 
         // the below statements make a keylistener enabling the user to simply click enter to submit the login and signup forms.
         document.getElementById("loginUsername").onkeydown = (e) => {
@@ -54,10 +57,10 @@ export default class Header extends React.Component {
         let username = localStorage.getItem("shoutUserNameLS");
 
         // check if user was previously signed in
-		//TODO: set this up as an option in the database. Only allow automatic login if that option is selected.
+        //TODO: set this up as an option in the database. Only allow automatic login if that option is selected.
         if (username) {
 
-			// if user was previously logged in, hide login and signup buttons and provide welcome message to user
+            // if user was previously logged in, hide login and signup buttons and provide welcome message to user
 
             // hide the login and signup buttons
             document.getElementById("loginDiv").setAttribute("class", "hidden");
@@ -66,6 +69,7 @@ export default class Header extends React.Component {
             document.getElementById("signedInAside").setAttribute("class", "show");
 
             alertify.success(`Welcome ${username}.`);
+            this.setState({username: username});
         }
     }
 
@@ -177,6 +181,7 @@ export default class Header extends React.Component {
 
                 // store username to local storage
                 localStorage.setItem("shoutUserNameLS", result.data[0].username);
+				this.setState({username: result.data[0].username});
 
                 // hide sign up aside
                 document.getElementById("loginForm").setAttribute("class", "hidden");
@@ -279,6 +284,7 @@ export default class Header extends React.Component {
 
                     // set username to local storage
                     localStorage.setItem("shoutUserNameLS", result.data.username);
+					this.setState({username: result.data.username})
 
                     // hide sign up aside
                     document.getElementById("signUpForm").setAttribute("class", "hidden");
@@ -294,41 +300,42 @@ export default class Header extends React.Component {
 
     }
 
-	optionsClick() {
-		// console.log("options click");
+    optionsClick() {
+        // console.log("options click");
 
-		// hide sign up aside
-		document.getElementById("signedInAside").setAttribute("class", "hidden");
+        // hide sign up aside
+        document.getElementById("signedInAside").setAttribute("class", "hidden");
 
-		// show signed in aside
-		document.getElementById("optionsAside").setAttribute("class", "show");
-	}
+        // show signed in aside
+        document.getElementById("optionsAside").setAttribute("class", "show");
+    }
 
-	backClick() {
+    backClick() {
 
-		// hide sign up aside
-		document.getElementById("optionsAside").setAttribute("class", "hidden");
+        // hide sign up aside
+        document.getElementById("optionsAside").setAttribute("class", "hidden");
 
-		// show signed in aside
-		document.getElementById("signedInAside").setAttribute("class", "show");
+        // show signed in aside
+        document.getElementById("signedInAside").setAttribute("class", "show");
 
-	}
+    }
 
-	signoutClick() {
-		// console.log("options click");
+    signoutClick() {
+        // console.log("options click");
 
-		// remove username from localStorage
-		localStorage.removeItem("shoutUserNameLS");
+        // remove username from localStorage
+        localStorage.removeItem("shoutUserNameLS");
 
-		// hide sign up aside
-		document.getElementById("optionsAside").setAttribute("class", "hidden");
+        // hide sign up aside
+        document.getElementById("optionsAside").setAttribute("class", "hidden");
 
-		// show signed in aside
-		document.getElementById("loginDiv").setAttribute("class", "show");
+        // show signed in aside
+        document.getElementById("loginDiv").setAttribute("class", "show");
 
-		// provide visual cue to user
-		alertify.success("Signed Out");
-	}
+        // provide visual cue to user
+        alertify.success("Signed Out");
+		this.setState({username: ""});
+    }
 
     // Here we render the function
     render() {
@@ -337,8 +344,10 @@ export default class Header extends React.Component {
                 <button className="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
                 </button>
-                <a id="brand" className="navbar-brand" onClick={this.sideBarToggle} data-toggle="tooltip" data-placement="right" title="Open Drawer"><i className="fa fa-bullhorn fa-2x"></i></a>
-				<h1>Shout</h1>
+                <a id="brand" className="navbar-brand" onClick={this.sideBarToggle} data-toggle="tooltip" data-placement="right" title="Open Drawer">
+                    <i className="fa fa-bullhorn fa-2x"></i>
+                </a>
+                <h1>Shout</h1>
                 <aside id="loginDiv">
                     <button id="loginButton" className="btn btn-outline-primary" onClick={this.loginClick}>Login</button>
                     <button id="signUpButton" className="btn btn-outline-primary" onClick={this.signUpClick}>Sign Up</button>
@@ -357,17 +366,26 @@ export default class Header extends React.Component {
                 <aside id="signedInAside" className="hidden">
                     <div>
                         <span>
-                            <a onClick={this.optionsClick}><i className="fa fa-user fa-2x" data-toggle="tooltip" data-placement="left" title="user options"></i></a>
+                            <a onClick={this.optionsClick}>
+								<span>{this.state.username}</span>
+                                <i className="fa fa-user fa-2x" data-toggle="tooltip" data-placement="left" title="user options"></i>
+                            </a>
                         </span>
                     </div>
                 </aside>
-				<aside id="optionsAside" className="hidden">
-					<div>
-						<a><i className="fa fa-cloud fa-2x" data-toggle="tooltip" data-placement="bottom" title="authorize" onClick={this.props.transform}></i></a>
-						<a><i className="fa fa-sign-out fa-2x" data-toggle="tooltip" data-placement="bottom" title="signout" onClick={this.signoutClick}></i></a>
-						<a><i className="fa fa-chevron-right fa-2x" data-toggle="tooltip" data-placement="bottom" title="back" onClick={this.backClick}></i></a>
-					</div>
-				</aside>
+                <aside id="optionsAside" className="hidden">
+                    <div>
+                        <a>
+                            <i className="fa fa-cloud fa-2x" data-toggle="tooltip" data-placement="bottom" title="authorize" onClick={this.props.transform}></i>
+                        </a>
+                        <a>
+                            <i className="fa fa-sign-out fa-2x" data-toggle="tooltip" data-placement="bottom" title="signout" onClick={this.signoutClick}></i>
+                        </a>
+                        <a>
+                            <i className="fa fa-chevron-right fa-2x" data-toggle="tooltip" data-placement="bottom" title="back" onClick={this.backClick}></i>
+                        </a>
+                    </div>
+                </aside>
             </nav>
         );
     }

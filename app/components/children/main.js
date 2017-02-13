@@ -162,7 +162,47 @@ export default class Main extends React.Component {
         let username = localStorage.getItem("shoutUserNameLS");
 
         // run authorize function
-        networks[name.toLowerCase()].authorize(username);
+		if (name.toLowerCase() == "linkedin") {
+
+			let options = {
+				headers: {
+					id: "linkedin",
+					username: username
+				}
+			};
+
+			// api call to getClientId. Returns a promise.
+			axios.get("/getClientId", options).then((result) => {
+				console.log(result);
+
+				// object to hold header values
+				let authObject = {
+					response_type: "code",
+					client_id: result.data.id,
+					redirect_uri: result.data.callback,
+					state: result.data.state
+				};
+
+				// variable to hold url string
+				let url = "https://www.linkedin.com/oauth/v2/authorization?";
+
+				for (var key in authObject) {
+					url += key;
+					url += "=";
+					url += authObject[key];
+					url += "&";
+				}
+
+				url = url.substring(0, url.length-1);
+
+				window.open(url);
+
+			}).catch((error) => {
+				console.log(error);
+			});
+
+		}
+		else networks[name.toLowerCase()].authorize(username);
     }
 
     // Here we render the function

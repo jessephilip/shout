@@ -88,7 +88,10 @@ let userSchema = mongoose.Schema({
         },
         secret: {
             type: String
-        }
+        },
+		linkedInState: {
+			type: String
+		}
     },
 
     userCreated: {

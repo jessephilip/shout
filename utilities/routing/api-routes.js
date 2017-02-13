@@ -13,9 +13,6 @@ const twitterTools = require("../twitterTools.js");
 // import express' request module
 const request = require("request");
 
-// import opn
-const opn = require("opn");
-
 // export routes to go to server.js
 module.exports = (app) => {
 
@@ -88,49 +85,154 @@ module.exports = (app) => {
 
     });
 
+    // general
+
+    // this function will return the client_id for a service
+    app.get("/getClientId", (req, res) => {
+
+        // get username
+        let username = req.headers.username;
+
+        // get program requested
+        let id = req.headers.id;
+
+        // console.log("id: ", id);
+
+        switch (id) {
+
+            case "linkedin":
+                // find user by username in the database
+                User.findOne({
+                    username: username
+                }, (err, user) => {
+                    if (err)
+                        throw err;
+                    else {
+
+                        // create temporary linkedin state
+                        // variable to hold random string
+                        let string = "";
+                        for (var i = 0; i < 20; i++) {
+
+                            // get random number between 65 and 90
+                            let number = Math.floor(Math.random() * (90 - 65)) + 65;
+
+                            // convert number to letter in ASCII chart
+                            let char = String.fromCharCode(number);
+
+                            // push letter to array
+                            string += char;
+                        }
+
+                        // convert array into string
+                        console.log("string: ", string);
+
+                        user.temp.linkedInState = string;
+                        user.save((err, updatedUser) => {
+                            if (err) {
+                                console.log("linkedin save state error: ", err);
+                                // console.log(updatedUser);
+                            } else {
+                                res.send({id: process.env.LINKEDIN_CLIENT_ID, callback: process.env.LINKEDIN_CALLBACK, state: string});
+                            }
+                        });
+                    }
+                });
+                break;
+
+            case "twitter":
+                res.send({id: process.env.TWITTER_CONSUMER_KEY, callback: process.env.TWITTER_CALLBACK});
+                break;
+            default:
+                res.send("You are requesting an ID for a network not supported by Shout.");
+        }
+    });
+
     // twitter GET routes
     app.get("/getTweets", (req, res) => {
-		console.log("/getTweets hit");
+        console.log("/getTweets hit");
 
-		let username = req.headers.username;
+        let username = req.headers.username;
 
-		// get user's home timeline
-		twitterTools.getUserTimeline(username).then(timeline => {
-			console.log("/getTweets results: ", timeline);
-			res.send(timeline);
-		}).catch(timelineError => {
-			console.log("/getTweets error", error);
-			res.send(timelineError);
-		});
+        // get user's home timeline
+        twitterTools.getUserTimeline(username).then(timeline => {
+            console.log("/getTweets results: ", timeline);
+            res.send(timeline);
+        }).catch(timelineError => {
+            console.log("/getTweets error", error);
+            res.send(timelineError);
+        });
     });
 
     // twitter POST routes
     app.post("/tweet", (req, res) => {
 
-		// console.log("/tweet hit");
+        // console.log("/tweet hit");
 
-		// get username from client
+        // get username from client
         let username = req.body.username;
-		let message = req.body.message;
+        let message = req.body.message;
 
-		twitterTools.newStatus(username, message).then(result => {
-			res.send(result);
-		}).catch(error => {
-			res.send(error);
-		});
+        twitterTools.newStatus(username, message).then(result => {
+            res.send(result);
+        }).catch(error => {
+            res.send(error);
+        });
     });
 
     /* ---------- AUTHORIZE ROUTES ---------- */
 
-    // authorize linkedin
-    app.post("/authorizeLinkedIn", (req, res) => {
+    app.get("/linkedinCallback", (req, res) => {
 
-        // get username passed in arguments
-        let username = req.body.username;
+        User.findOne({
+            "temp.linkedInState": req.query.state
+        }, (err, user) => {
+            if (err)
+                throw err;
+            else {
+                // console.log("linkedinCallback: ", user);
 
-        console.log("/authorizeLinkedIn username: ", username);
+                var options = {
+                    method: 'POST',
+                    url: 'https://www.linkedin.com/oauth/v2/accessToken',
+                    qs: {
+                        grant_type: "authorization_code",
+                        code: req.query.code,
+                        client_id: process.env.LINKEDIN_CLIENT_ID,
+                        client_secret: process.env.LINKEDIN_CLIENT_SECRET,
+                        redirect_uri: process.env.LINKEDIN_CALLBACK
+                    },
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    }
+                };
 
-        res.end();
+                // perform request for bearer token
+                request(options, function(error, response, body) {
+                    if (error) {
+                        throw new Error(error);
+                    } else {
+                        // console.log(body);
+						let accessToken = body.substring(0, body.indexOf(","));
+						let accessTokenArray = accessToken.split(":");
+						accessToken = accessTokenArray[1];
+						accessToken = accessToken.substring(1, accessToken.length-1);
+
+						user.credentials.linkedin.accessToken = accessToken;
+                        user.save( (errToken, updatedWithToken) => {
+                            if (errToken)
+                                throw errToken;
+                            else {
+								console.log(updatedWithToken);
+                                res.send("success. please close this window.");
+                            }
+                        });
+
+                    }
+                });
+            }
+        });
+
     });
 
     // authorize facebook
@@ -171,14 +273,14 @@ module.exports = (app) => {
                 console.log("Error looking up user by temp.token: ", err);
             } else {
                 // console.log("secret token", secret.temp.secret);
-				// capture user's shout username
-				let username = secret.username;
+                // capture user's shout username
+                let username = secret.username;
                 twitterTools.twitterGetAccessToken(secret.temp.token, secret.temp.secret, tokens.oauth_verifier).then(result => {
-					twitterTools.getAccountDetails(username).then(details => {
-					res.send(details);
-					});
+                    twitterTools.getAccountDetails(username).then(details => {
+                        res.send(details);
+                    });
 
-				})
+                })
 
             }
         });
@@ -213,9 +315,6 @@ module.exports = (app) => {
                     console.log("getRequestToken find user error: ", err);
                 } else {
                     console.log("getRequestToken find user results: ", updated);
-
-                    // use opn to open web browser. allows user to authorize Shout with twitter.
-                    // opn("https://api.twitter.com/oauth/authorize?oauth_token=" + tokens.requestToken);
 
                     res.send(updated);
                 }
