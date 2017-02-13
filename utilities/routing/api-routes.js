@@ -10,6 +10,9 @@ const axios = require("axios");
 // import custom tools functions
 const twitterTools = require("../twitterTools.js");
 
+// import custom tools functions
+const linkedInTools = require("../linkedInTools.js");
+
 // import express' request module
 const request = require("request");
 
@@ -179,6 +182,26 @@ module.exports = (app) => {
             res.send(error);
         });
     });
+
+	// linkedin POST routes
+
+	// create a shared message to linkedin
+	app.post("/linkedInShare", (req, res) => {
+		console.log("debug: /linkedInShare reached.");
+
+		// get username, message, and options from client
+		let username = req.body.username;
+		let message = req.body.message;
+		let restObject = req.body.restObject;
+
+		linkedInTools.share(username, message, restObject).then( result => {
+			console.log("debug: linkedInShare result: ", result);
+		}).catch( error => {
+			console.log("linkedInShare error: ", error);
+		});
+
+
+	});
 
     /* ---------- AUTHORIZE ROUTES ---------- */
 

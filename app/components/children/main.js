@@ -23,6 +23,7 @@ export default class Main extends React.Component {
             tweets: []
         };
         this.tweet = this.tweet.bind(this);
+        this.linkedInShare = this.linkedInShare.bind(this);
         this.toggleNetworkState = this.toggleNetworkState.bind(this);
         this.shout = this.shout.bind(this);
         this.clearNetworksSelected = this.clearNetworksSelected.bind(this);
@@ -62,7 +63,7 @@ export default class Main extends React.Component {
         // add newState to array if boolean is true and it is not already in the array
         if (bool && present.indexOf(newState) === -1) {
             present.push(newState);
-            // console.log(present);
+            console.log(present);
             this.setState({postStatus: present});
         }
 
@@ -70,7 +71,7 @@ export default class Main extends React.Component {
         if (!bool && present.indexOf(newState) >= 0) {
             present.splice(present.indexOf(newState), 1);
             this.setState({postStatus: present});
-            // console.log(present);
+            console.log(present);
         }
     }
 
@@ -83,6 +84,7 @@ export default class Main extends React.Component {
             switch (this.state.postStatus[i]) {
 
                 case "linkedin":
+                    this.linkedInShare();
                     alertify.success("Posting linkedIn message.");
                     this.clearNetworksSelected();
                     break;
@@ -114,6 +116,33 @@ export default class Main extends React.Component {
                 default:
                     alertify.error("Error. Tried to post to: " + this.state.postStatus[i] + ".");
             }
+        }
+    }
+
+    // this function posts a linkedin share
+    linkedInShare() {
+        console.log("linkedinShare");
+
+        // get username
+        let username = localStorage.getItem("shoutUserNameLS");
+
+        // variable for the tweet message
+        let share = document.getElementById("mainShout").value;
+
+        // check to see if user input is valid
+        if (!Boolean(share)) {
+            alertify.error("Please put in a valid LinkedIn Share.");
+        } else {
+            axios.post("/linkedInShare", {
+                username: username,
+                message: share,
+                restObject: {}
+            }).then((result) => {
+                console.log("/linkedInshare result: ", result);
+            }).catch((error) => {
+                console.log("/linkedInShare error: ", error);
+            });
+
         }
     }
 
@@ -162,48 +191,48 @@ export default class Main extends React.Component {
         let username = localStorage.getItem("shoutUserNameLS");
 
         // run authorize function
-		if (name.toLowerCase() == "linkedin") {
+        if (name.toLowerCase() == "linkedin") {
 
-			let options = {
-				headers: {
-					id: "linkedin",
-					username: username
-				}
-			};
+            let options = {
+                headers: {
+                    id: "linkedin",
+                    username: username
+                }
+            };
 
-			// api call to getClientId. Returns a promise.
-			axios.get("/getClientId", options).then((result) => {
-				console.log(result);
+            // api call to getClientId. Returns a promise.
+            axios.get("/getClientId", options).then((result) => {
+                console.log(result);
 
-				// object to hold header values
-				let authObject = {
-					response_type: "code",
-					client_id: result.data.id,
-					redirect_uri: result.data.callback,
-					state: result.data.state
-				};
+                // object to hold header values
+                let authObject = {
+                    response_type: "code",
+                    client_id: result.data.id,
+                    redirect_uri: result.data.callback,
+                    state: result.data.state
+                };
 
-				// variable to hold url string
-				let url = "https://www.linkedin.com/oauth/v2/authorization?";
+                // variable to hold url string
+                let url = "https://www.linkedin.com/oauth/v2/authorization?";
 
-				for (var key in authObject) {
-					url += key;
-					url += "=";
-					url += authObject[key];
-					url += "&";
-				}
+                for (var key in authObject) {
+                    url += key;
+                    url += "=";
+                    url += authObject[key];
+                    url += "&";
+                }
 
-				url = url.substring(0, url.length-1);
+                url = url.substring(0, url.length - 1);
 
-				window.open(url);
+                window.open(url);
 
-			}).catch((error) => {
-				console.log(error);
-			});
+            }).catch((error) => {
+                console.log(error);
+            });
 
-		}
-		else networks[name.toLowerCase()].authorize(username);
-    }
+        } else
+            networks[name.toLowerCase()].authorize(username);
+        }
 
     // Here we render the function
     render() {
