@@ -1,4 +1,5 @@
-//TODO: change the highlight color of the input field
+// TODO: change the highlight color of the input field
+// TODO: let the user know what pieces are what when multiple windows pop up for a linkedin message
 
 // Include React
 import React from "react";
@@ -28,6 +29,8 @@ export default class Main extends React.Component {
         this.shout = this.shout.bind(this);
         this.clearNetworksSelected = this.clearNetworksSelected.bind(this);
         this.authorizeNetworkBox = this.authorizeNetworkBox.bind(this);
+        this.openOptionsBar = this.openOptionsBar.bind(this);
+        this.closeOptionsBar = this.closeOptionsBar.bind(this);
     }
 
     componentDidMount() {
@@ -56,7 +59,7 @@ export default class Main extends React.Component {
     }
 
     toggleNetworkState(newState, bool) {
-        // console.log(newState, bool);
+        console.log(newState, bool);
         let present = this.state.postStatus;
         // console.log(present);
 
@@ -73,6 +76,42 @@ export default class Main extends React.Component {
             this.setState({postStatus: present});
             console.log(present);
         }
+
+        // open the options bar if at least one network is selected for posting
+        if (this.state.postStatus.length > 0) {
+
+            // get the optionsBar
+            let optionsBar = document.getElementById('optionsBar');
+
+            // get the articles within the optionsBar
+            let optionsArticles = optionsBar.getElementsByTagName("article");
+
+            for (var i = 0; i < optionsArticles.length; i++) {
+                optionsArticles[i].style.display = "none";
+            }
+
+            for (i = 0; i < this.state.postStatus.length; i++) {
+                document.getElementById(this.state.postStatus[i] + "Options").style.display = "initial";
+            }
+
+            this.openOptionsBar();
+        }
+
+        // close the options bar if no networks are selected
+        if (this.state.postStatus.length === 0)
+            this.closeOptionsBar();
+        }
+
+    // this function will open up the options side bar
+    openOptionsBar() {
+        console.log("open options bar");
+        document.getElementById('optionsBar').style.width = "33%";
+    }
+
+    // this function will close the options side bar
+    closeOptionsBar() {
+        console.log("close options bar");
+        document.getElementById('optionsBar').style.width = "0px";
     }
 
     shout() {
@@ -121,25 +160,61 @@ export default class Main extends React.Component {
 
     // this function posts a linkedin share
     linkedInShare() {
-        console.log("linkedinShare");
 
         // get username
         let username = localStorage.getItem("shoutUserNameLS");
 
-        // variable for the tweet message
-        let share = document.getElementById("mainShout").value;
+        // variable for the linkedin title
+        let share = document.getElementById("mainShout").value.trim();
 
-        // check to see if user input is valid
+        // get values from the options bar
+        let description = document.getElementById("linkedInShoutDescription").value.trim();
+        let url = document.getElementById("linkedInShoutURL").value.trim();
+        let image = document.getElementById("linkedInShoutImage").value.trim();
+        let comment = document.getElementById("linkedInShoutComment").value.trim();
+        let visibility;
+
+        // get selection from visibility radio buttons
+        let radios = document.getElementsByName("linkedInVisibility");
+
+        for (var i = 0; i < radios.length; i++) {
+            if (radios[i].checked)
+                visibility = radios[i].value;
+            }
+
+        // combine options into single object
+        let options = {
+            visibility: visibility
+        };
+
+        // first check to see if value exists before adding to object
+        if (description.length > 0)
+            options.description = description;
+        if (url.length > 0)
+            options["submitted-url"] = url;
+        if (image.length > 0)
+            options["submitted-image-url"] = image;
+        if (comment.length > 0)
+            options.comment = comment;
+
+        // check to see if user input in main shout input field is valid
         if (!Boolean(share)) {
             alertify.error("Please put in a valid LinkedIn Share.");
         } else {
             axios.post("/linkedInShare", {
                 username: username,
                 message: share,
-                restObject: {}
-            }).then((result) => {
-                console.log("/linkedInshare result: ", result);
-            }).catch((error) => {
+                restObject: options
+            }).then(result => {
+
+				// clear out values from input fields
+				document.getElementById('mainShout').value = "";
+				document.getElementById('linkedInShoutDescription').value = "";
+				document.getElementById('linkedInShoutURL').value = "";
+				document.getElementById('linkedInShoutImage').value = "";
+				document.getElementById('linkedInShoutComment').value = "";
+
+            }).catch(error => {
                 console.log("/linkedInShare error: ", error);
             });
 
@@ -239,7 +314,6 @@ export default class Main extends React.Component {
         return (
             <main className="bg-main">
 
-                {/* TODO:  this aside increases the height of the page. fix this. */}
                 <aside id="sideBar" className="bg-alt" data-open="false">
                     <SideList name="Tweets" tweets={this.state.tweets}/>
                 </aside>
@@ -285,6 +359,43 @@ export default class Main extends React.Component {
                         </a>
                     </div>
                 </div>
+
+                <aside id="optionsBar">
+                    <article id="linkedinOptions">
+                        <h4>LinkedIn Options</h4>
+                        <div className="networkOptions">
+                            <form>
+                                <div><input id="linkedInShoutDescription" type="text" placeholder="description"/></div>
+                                <div><input id="linkedInShoutURL" type="text" placeholder="url to actual message"/></div>
+                                <div><input id="linkedInShoutImage" type="text" placeholder="image url"/></div>
+                                <div><textarea id="linkedInShoutComment" type="text" placeholder="comment"/></div>
+                                <div>
+									
+									<input type="radio" name="linkedInVisibility" value="anyone" defaultChecked/>Anyone
+                                    <input type="radio" name="linkedInVisibility" value="connections-only"/>Connections Only
+                                </div>
+                            </form>
+                        </div>
+                    </article>
+                    <article id="facebookOptions">
+                        <h4>Facebook Options</h4>
+                    </article>
+                    <article id="instagramOptions">
+                        <h4>Instagram Options</h4>
+                    </article>
+                    <article id="twitterOptions">
+                        <h4>Twitter Options</h4>
+                    </article>
+                    <article id="googleplusOptions">
+                        <h4>Google Plus Options</h4>
+                    </article>
+                    <article id="pinterestOptions">
+                        <h4>Pinterest Options</h4>
+                    </article>
+                    <article id="tumblrOptions">
+                        <h4>Tumblr Options</h4>
+                    </article>
+                </aside>
 
             </main>
         );

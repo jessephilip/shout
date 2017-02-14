@@ -187,19 +187,20 @@ module.exports = (app) => {
 
 	// create a shared message to linkedin
 	app.post("/linkedInShare", (req, res) => {
-		console.log("debug: /linkedInShare reached.");
 
 		// get username, message, and options from client
 		let username = req.body.username;
 		let message = req.body.message;
 		let restObject = req.body.restObject;
 
+		// call linkedin share function
 		linkedInTools.share(username, message, restObject).then( result => {
 			console.log("debug: linkedInShare result: ", result);
+			res.end();
 		}).catch( error => {
 			console.log("linkedInShare error: ", error);
+			res.end();
 		});
-
 
 	});
 

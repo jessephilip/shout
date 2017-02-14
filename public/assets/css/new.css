@@ -2,6 +2,33 @@
 /* Backgrounds */
 /* Texts */
 /* ---------- Fonts ---------- */
+/* ---------- Spacing Values ---------- */
 /* CSS */
+#optionsBar {
+  position: absolute;
+  padding-top: 68px;
+  padding-bottom: 68px;
+  right: 0;
+  width: 0;
+  top: 0;
+  height: 100%;
+  background-color: #cfc291;
+  transition: 1s;
+  overflow-y: scroll; }
+  #optionsBar .networkOptions {
+    width: 100%; }
+    #optionsBar .networkOptions form div {
+      margin-left: 1vw;
+      margin-right: 1vw; }
+    #optionsBar .networkOptions input[type="text"] {
+      width: 100%;
+      margin: 1vh auto; }
+    #optionsBar .networkOptions input[type="radio"] {
+      margin: 1vh 1vw; }
+    #optionsBar .networkOptions textarea {
+      width: 100%;
+      margin: 1vh auto; }
+  #optionsBar h4 {
+    text-align: center; }
 
 /*# sourceMappingURL=new.css.map */
