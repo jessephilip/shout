@@ -4,6 +4,12 @@
 /* ---------- Fonts ---------- */
 /* ---------- Spacing Values ---------- */
 /* CSS */
+button {
+  cursor: pointer; }
+
+#mainShoutDiv {
+  text-align: center; }
+
 #welcomeScreen {
   text-align: center; }
 

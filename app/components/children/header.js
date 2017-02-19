@@ -372,8 +372,14 @@ export default class Header extends React.Component {
         // hide sign up aside
         document.getElementById("optionsAside").setAttribute("class", "hidden");
 
+		// hide socialAuthorize
+		document.getElementById('socialAuthorization').style.display = 'none';
+
         // show signed in aside
         document.getElementById("signedInAside").setAttribute("class", "show");
+
+		// show mainShoutDiv
+		document.getElementById('mainShoutDiv').style.display = 'initial';
 
     }
 

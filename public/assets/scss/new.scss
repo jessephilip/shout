@@ -12,6 +12,18 @@ $accentFont: 'Open Sans', sans-serif;
 /* ---------- Spacing Values ---------- */
 /* CSS */
 
+// Globals //
+
+button {
+	cursor: pointer;
+}
+
+// DOM Elements in main.js //
+
+#mainShoutDiv {
+	text-align: center;
+}
+
 // Welcome Screen //
 
 #welcomeScreen {

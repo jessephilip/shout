@@ -1,4 +1,3 @@
-// TODO: When backing out completely out of the header options menu, restore the shout menu to the screen
 // TODO: Description with linked in didn't go through. Did not have to do with "" in description.
 // TODO: spacing for top of options bar
 // TODO: Light up the icons that are "supposedly" authorized
@@ -6,13 +5,13 @@
 // TODO: Update "username and account picture" in header with photo from Google, Facebook, Twitter, LinkedIn
 // TODO: Only show the icons that are authorized in the main shout menu and in the notifications sidebar
 // TODO: Set up LinkedIn and Facebook to work with the feed bar
-// TODO: autoclose the authorizzation window when confirmed
+// TODO: autoclose the authorization window when confirmed
 // TODO: set up error handling for authorization
 // TODO: have on screen prompts to help with messaging
 // TODO: let the user know what pieces are what when multiple windows pop up for a linkedin message
 // TODO: change the highlight color of the input field
 // TODO: use different color error messages for the different color networks
-// TODO: set up cancel buttons on both login and submit
+// TODO: Style header better. Use sass for 
 
 // Include React
 import React from "react";
