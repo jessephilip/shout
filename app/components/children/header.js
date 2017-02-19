@@ -7,8 +7,8 @@ export default class Header extends React.Component {
     constructor() {
         super();
         this.state = {
-			username: ""
-		};
+            username: ""
+        };
         this.sideBarToggle = this.sideBarToggle.bind(this);
         this.loginClick = this.loginClick.bind(this);
         this.loginSubmit = this.loginSubmit.bind(this);
@@ -17,15 +17,16 @@ export default class Header extends React.Component {
         this.optionsClick = this.optionsClick.bind(this);
         this.signoutClick = this.signoutClick.bind(this);
         this.backClick = this.backClick.bind(this);
-		this.loginCancel = this.loginCancel.bind(this);
-		this.signUpCancel = this.signUpCancel.bind(this);
+        this.loginCancel = this.loginCancel.bind(this);
+        this.signUpCancel = this.signUpCancel.bind(this);
+        this.authorizeClick = this.authorizeClick.bind(this);
         this.login = {};
         this.signUp = {};
 
     }
 
     componentDidMount() {
-		// console.log("header did mount");
+        // console.log("header did mount");
 
         // the below statements make a keylistener enabling the user to simply click enter to submit the login and signup forms.
         document.getElementById("loginUsername").onkeydown = (e) => {
@@ -120,12 +121,35 @@ export default class Header extends React.Component {
         document.getElementById("signUpUsername").focus();
     }
 
-	loginCancel() {
+    loginCancel() {
+		console.log("login cancel clicked");
+
+		// hide stuff
+		document.getElementById('loginForm').setAttribute("class", "hidden");
+		document.getElementById('loginPassword').setAttribute("class", "hidden");
+
+		// show stuff
+		document.getElementById('loginDiv').setAttribute("class", "show");
+		document.getElementById('loginUsername').setAttribute("class", "show");
+
+		// reset values
+		this.login = {};
 
 	}
 
-	signUpCancel() {
+    signUpCancel() {
+		console.log("login cancel clicked");
 
+		// hide stuff
+		document.getElementById('signUpForm').setAttribute("class", "hidden");
+		document.getElementById('signUpPassword').setAttribute("class", "hidden");
+
+		// show stuff
+		document.getElementById('loginDiv').setAttribute("class", "show");
+		document.getElementById('signUpUsername').setAttribute("class", "show");
+
+		// reset values
+		this.signUp = {};
 	}
 
     // funtion governing the login submit button
@@ -148,6 +172,9 @@ export default class Header extends React.Component {
             // hide login input field
             loginUsername.setAttribute("class", "hidden");
 
+			// update the placeholder text for loginPassword
+			loginPassword.setAttribute("placeholder", "password for " + this.login.username);
+
             // show password input field
             loginPassword.setAttribute("class", "show");
 
@@ -155,7 +182,7 @@ export default class Header extends React.Component {
             loginPassword.focus();
         }
 
-        if (loginPassword.value) {
+        if (this.login.username && loginPassword.value) {
 
             // save value to login object
             this.login.password = loginPassword.value;
@@ -192,7 +219,7 @@ export default class Header extends React.Component {
 
                 // store username to local storage
                 localStorage.setItem("shoutUserNameLS", result.data[0].username);
-				this.setState({username: result.data[0].username});
+                this.setState({username: result.data[0].username});
 
                 // hide sign up aside
                 document.getElementById("loginForm").setAttribute("class", "hidden");
@@ -200,11 +227,17 @@ export default class Header extends React.Component {
                 // show signed in aside
                 document.getElementById("signedInAside").setAttribute("class", "show");
 
-				// hide welcome screen
-				document.getElementById('welcomeScreen').style.display = "none";
+                // hide welcome screen
+                document.getElementById('welcomeScreen').style.display = "none";
 
-				// show mainshout screen
-				document.getElementById('mainShoutDiv').style.display = "initial";
+                // show mainshout screen
+                document.getElementById('mainShoutDiv').style.display = "initial";
+
+                // hide the loginPassword input field
+                loginPassword.setAttribute("class", "hidden");
+
+                // show the loginUsername input field
+                loginUsername.setAttribute("class", "show");
 
             }).catch((error) => {
                 console.log("error");
@@ -301,7 +334,7 @@ export default class Header extends React.Component {
 
                     // set username to local storage
                     localStorage.setItem("shoutUserNameLS", result.data.username);
-					this.setState({username: result.data.username})
+                    this.setState({username: result.data.username})
 
                     // hide sign up aside
                     document.getElementById("signUpForm").setAttribute("class", "hidden");
@@ -309,11 +342,11 @@ export default class Header extends React.Component {
                     // show signed in aside
                     document.getElementById("signedInAside").setAttribute("class", "show");
 
-					// hide welcomeScreen
-					document.getElementById('welcomeScreen').style.display = "none";
+                    // hide welcomeScreen
+                    document.getElementById('welcomeScreen').style.display = "none";
 
-					// show mainShoutDiv
-					document.getElementById('mainShoutDiv').style.display = "initial";
+                    // show mainShoutDiv
+                    document.getElementById('mainShoutDiv').style.display = "initial";
 
                 }
             }).catch((error) => {
@@ -356,15 +389,32 @@ export default class Header extends React.Component {
         // show signed in aside
         document.getElementById("loginDiv").setAttribute("class", "show");
 
-		// hide mainShoutDiv
-		document.getElementById('mainShoutDiv').style.display = "none";
+        // hide mainShoutDiv
+        document.getElementById('mainShoutDiv').style.display = "none";
 
-		// show welcomeScreen
-		document.getElementById('welcomeScreen').style.display = "initial";
+        // hide socialAuthorization
+        document.getElementById('socialAuthorization').style.display = "none";
+
+        // show welcomeScreen
+        document.getElementById('welcomeScreen').style.display = "initial";
 
         // provide visual cue to user
         alertify.success("Signed Out");
-		this.setState({username: ""});
+        this.setState({username: ""});
+        this.login = {};
+        this.signUp = {};
+        console.log("login: ", this.login);
+        console.log("signUp: ", this.signUp);
+
+    }
+
+    authorizeClick() {
+
+        // hide mainShoutDiv
+        document.getElementById('mainShoutDiv').style.display = "none";
+
+        // show authorize section
+        document.getElementById('socialAuthorization').style.display = "initial";
     }
 
     // Here we render the function
@@ -386,20 +436,20 @@ export default class Header extends React.Component {
                     <input id="loginUsername" type="text" placeholder="login username"/>
                     <input id="loginPassword" type="password" className="hidden" placeholder="password"/>
                     <button type="submit" className="btn btn-primary btn-sm" onClick={this.loginSubmit}>Submit</button>
-					<button type="submit" className="btn btn-primary btn-sm" onClick={this.loginCancel}>Cancel</button>
+                    <button type="submit" className="btn btn-primary btn-sm" onClick={this.loginCancel}>Cancel</button>
                 </aside>
                 <aside id="signUpForm" className="hidden">
                     <input id="signUpUsername" type="text" placeholder="desired username"/>
                     <input id="signUpPassword" type="password" className="hidden" placeholder="desired password"/>
                     <input id="signUpConfirm" type="password" className="hidden" placeholder="confirm password"/>
-					<button type="submit" className="btn btn-primary btn-sm" onClick={this.loginSubmit}>Submit</button>
+                    <button type="submit" className="btn btn-primary btn-sm" onClick={this.loginSubmit}>Submit</button>
                     <button type="submit" className="btn btn-primary btn-sm" onClick={this.signUpCancel}>Cancel</button>
                 </aside>
                 <aside id="signedInAside" className="hidden">
                     <div>
                         <span>
                             <a onClick={this.optionsClick}>
-								<span>{this.state.username}</span>
+                                <span>{this.state.username}</span>
                                 <i className="fa fa-user fa-2x" data-toggle="tooltip" data-placement="left" title="user options"></i>
                             </a>
                         </span>
@@ -408,7 +458,7 @@ export default class Header extends React.Component {
                 <aside id="optionsAside" className="hidden">
                     <div>
                         <a>
-                            <i className="fa fa-cloud fa-2x" data-toggle="tooltip" data-placement="bottom" title="authorize" onClick={this.props.transform}></i>
+                            <i className="fa fa-cloud fa-2x" data-toggle="tooltip" data-placement="bottom" title="authorize" onClick={this.authorizeClick}></i>
                         </a>
                         <a>
                             <i className="fa fa-sign-out fa-2x" data-toggle="tooltip" data-placement="bottom" title="signout" onClick={this.signoutClick}></i>

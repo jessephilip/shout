@@ -55,12 +55,12 @@ export default class Main extends React.Component {
             if (username.length > 0) {
 
                 document.getElementById('welcomeScreen').style.display = "none";
-				document.getElementById('mainShoutDiv').style.display = "initial";
+                document.getElementById('mainShoutDiv').style.display = "initial";
             }
 
         } catch (err) {
             console.log("No user logged in.");
-			document.getElementById('mainShoutDiv').style.display = "none";
+            document.getElementById('mainShoutDiv').style.display = "none";
         }
 
         // give main shout input field the focus
@@ -440,33 +440,33 @@ export default class Main extends React.Component {
                         <NetworkBox toggleState={this.toggleNetworkState} network={networks.pinterest}/>
                         <NetworkBox toggleState={this.toggleNetworkState} network={networks.tumblr}/>
                     </div>
-                    <div id="socialAuthorization" className="hidden">
-                        <h2>Authorize Social Networks</h2>
-                        <p>Click the below buttons to authorize Shout to make and read posts on your behalf.</p>
-                        <br/>
-                        <div>
-                            <a onClick={this.authorizeNetworkBox}>
-                                <i data-name="LinkedIn" className="fa fa-linkedin-square fa-3x hvr-grow"></i>
-                            </a>
-                            <a onClick={this.authorizeNetworkBox}>
-                                <i data-name="Facebook" className="fa fa-facebook-square fa-3x hvr-grow"></i>
-                            </a>
-                            <a onClick={this.authorizeNetworkBox}>
-                                <i data-name="Instagram" className="fa fa-instagram fa-3x hvr-grow"></i>
-                            </a>
-                            <a onClick={this.authorizeNetworkBox}>
-                                <i data-name="Twitter" className="fa fa-twitter-square fa-3x hvr-grow"></i>
-                            </a>
-                            <a onClick={this.authorizeNetworkBox}>
-                                <i data-name="GooglePlus" className="fa fa-google-plus-square fa-3x hvr-grow"></i>
-                            </a>
-                            <a onClick={this.authorizeNetworkBox}>
-                                <i data-name="Pinterest" className="fa fa-pinterest-square fa-3x hvr-grow"></i>
-                            </a>
-                            <a onClick={this.authorizeNetworkBox}>
-                                <i data-name="Tumblr" className="fa fa-tumblr-square fa-3x hvr-grow"></i>
-                            </a>
-                        </div>
+                </div>
+                <div id="socialAuthorization" className="hidden">
+                    <h2>Authorize Social Networks</h2>
+                    <p>Click the below buttons to authorize Shout to make and read posts on your behalf.</p>
+                    <br/>
+                    <div>
+                        <a onClick={this.authorizeNetworkBox}>
+                            <i data-name="LinkedIn" className="fa fa-linkedin-square fa-3x hvr-grow"></i>
+                        </a>
+                        <a onClick={this.authorizeNetworkBox}>
+                            <i data-name="Facebook" className="fa fa-facebook-square fa-3x hvr-grow"></i>
+                        </a>
+                        <a onClick={this.authorizeNetworkBox}>
+                            <i data-name="Instagram" className="fa fa-instagram fa-3x hvr-grow"></i>
+                        </a>
+                        <a onClick={this.authorizeNetworkBox}>
+                            <i data-name="Twitter" className="fa fa-twitter-square fa-3x hvr-grow"></i>
+                        </a>
+                        <a onClick={this.authorizeNetworkBox}>
+                            <i data-name="GooglePlus" className="fa fa-google-plus-square fa-3x hvr-grow"></i>
+                        </a>
+                        <a onClick={this.authorizeNetworkBox}>
+                            <i data-name="Pinterest" className="fa fa-pinterest-square fa-3x hvr-grow"></i>
+                        </a>
+                        <a onClick={this.authorizeNetworkBox}>
+                            <i data-name="Tumblr" className="fa fa-tumblr-square fa-3x hvr-grow"></i>
+                        </a>
                     </div>
                 </div>
 

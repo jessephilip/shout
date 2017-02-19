@@ -37,16 +37,16 @@ module.exports = (app) => {
             // if User.find returns an error, handle that error.
             if (error) {
                 console.log(`Error. Error in finding user ${username}.`, error);
-                res.status(501).send(`Error. Error in finding user ${username}.` // if User.find is successful, but does not find a user by that name, handle that pseduo-error
-                );
+				 // if User.find is successful, but does not find a user by that name, handle that pseduo-error
+                res.status(501).send(`Error. Error in finding user ${username}.`);
             } else if (results.length == 0) {
-                console.log(`Error. User ${name} not found`);
-                res.status(502).send(`Error. User ${name} not found` // if User.find is successful, but the password supplied by the client does not match the returned password, handle that pseudo-error
-                );
+                console.log(`Error. User ${username} not found`);
+				// if User.find is successful, but the password supplied by the client does not match the returned password, handle that pseudo-error
+                res.status(502).send(`Error. User ${username} not found`);
             } else if (results[0].password !== password) {
                 console.log("Error. Password is incorrect.");
-                res.status(503).send(`Error. Password is incorrect.` // if no errors or pseudo-errors send positive response to the client
-                );
+				// if no errors or pseudo-errors send positive response to the client
+                res.status(503).send(`Error. Password is incorrect.`);
             } else {
                 res.send(results);
             }
