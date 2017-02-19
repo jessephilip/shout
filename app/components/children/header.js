@@ -17,8 +17,11 @@ export default class Header extends React.Component {
         this.optionsClick = this.optionsClick.bind(this);
         this.signoutClick = this.signoutClick.bind(this);
         this.backClick = this.backClick.bind(this);
+		this.loginCancel = this.loginCancel.bind(this);
+		this.signUpCancel = this.signUpCancel.bind(this);
         this.login = {};
         this.signUp = {};
+
     }
 
     componentDidMount() {
@@ -117,6 +120,14 @@ export default class Header extends React.Component {
         document.getElementById("signUpUsername").focus();
     }
 
+	loginCancel() {
+
+	}
+
+	signUpCancel() {
+
+	}
+
     // funtion governing the login submit button
     loginSubmit() {
 
@@ -188,6 +199,12 @@ export default class Header extends React.Component {
 
                 // show signed in aside
                 document.getElementById("signedInAside").setAttribute("class", "show");
+
+				// hide welcome screen
+				document.getElementById('welcomeScreen').style.display = "none";
+
+				// show mainshout screen
+				document.getElementById('mainShoutDiv').style.display = "initial";
 
             }).catch((error) => {
                 console.log("error");
@@ -291,6 +308,13 @@ export default class Header extends React.Component {
 
                     // show signed in aside
                     document.getElementById("signedInAside").setAttribute("class", "show");
+
+					// hide welcomeScreen
+					document.getElementById('welcomeScreen').style.display = "none";
+
+					// show mainShoutDiv
+					document.getElementById('mainShoutDiv').style.display = "initial";
+
                 }
             }).catch((error) => {
                 console.log("createUser error: ", error);
@@ -332,6 +356,12 @@ export default class Header extends React.Component {
         // show signed in aside
         document.getElementById("loginDiv").setAttribute("class", "show");
 
+		// hide mainShoutDiv
+		document.getElementById('mainShoutDiv').style.display = "none";
+
+		// show welcomeScreen
+		document.getElementById('welcomeScreen').style.display = "initial";
+
         // provide visual cue to user
         alertify.success("Signed Out");
 		this.setState({username: ""});
@@ -356,12 +386,14 @@ export default class Header extends React.Component {
                     <input id="loginUsername" type="text" placeholder="login username"/>
                     <input id="loginPassword" type="password" className="hidden" placeholder="password"/>
                     <button type="submit" className="btn btn-primary btn-sm" onClick={this.loginSubmit}>Submit</button>
+					<button type="submit" className="btn btn-primary btn-sm" onClick={this.loginCancel}>Cancel</button>
                 </aside>
                 <aside id="signUpForm" className="hidden">
                     <input id="signUpUsername" type="text" placeholder="desired username"/>
                     <input id="signUpPassword" type="password" className="hidden" placeholder="desired password"/>
                     <input id="signUpConfirm" type="password" className="hidden" placeholder="confirm password"/>
-                    <button type="submit" className="btn btn-primary btn-sm" onClick={this.signUpSubmit}>Submit</button>
+					<button type="submit" className="btn btn-primary btn-sm" onClick={this.loginSubmit}>Submit</button>
+                    <button type="submit" className="btn btn-primary btn-sm" onClick={this.signUpCancel}>Cancel</button>
                 </aside>
                 <aside id="signedInAside" className="hidden">
                     <div>

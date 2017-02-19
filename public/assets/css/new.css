@@ -4,6 +4,9 @@
 /* ---------- Fonts ---------- */
 /* ---------- Spacing Values ---------- */
 /* CSS */
+#welcomeScreen {
+  text-align: center; }
+
 #optionsBar {
   position: absolute;
   padding-top: 68px;

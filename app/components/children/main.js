@@ -1,5 +1,18 @@
-// TODO: change the highlight color of the input field
+// TODO: When backing out completely out of the header options menu, restore the shout menu to the screen
+// TODO: Description with linked in didn't go through. Did not have to do with "" in description.
+// TODO: spacing for top of options bar
+// TODO: Light up the icons that are "supposedly" authorized
+// TODO: Implement sign in with Google, Facebook, Twitter, linkedin
+// TODO: Update "username and account picture" in header with photo from Google, Facebook, Twitter, LinkedIn
+// TODO: Only show the icons that are authorized in the main shout menu and in the notifications sidebar
+// TODO: Set up LinkedIn and Facebook to work with the feed bar
+// TODO: autoclose the authorizzation window when confirmed
+// TODO: set up error handling for authorization
+// TODO: have on screen prompts to help with messaging
 // TODO: let the user know what pieces are what when multiple windows pop up for a linkedin message
+// TODO: change the highlight color of the input field
+// TODO: use different color error messages for the different color networks
+// TODO: set up cancel buttons on both login and submit
 
 // Include React
 import React from "react";
@@ -36,11 +49,26 @@ export default class Main extends React.Component {
     componentDidMount() {
         // console.log("main did mount");
 
+        let username = localStorage.getItem("shoutUserNameLS");
+
+        try {
+            if (username.length > 0) {
+
+                document.getElementById('welcomeScreen').style.display = "none";
+				document.getElementById('mainShoutDiv').style.display = "initial";
+            }
+
+        } catch (err) {
+            console.log("No user logged in.");
+			document.getElementById('mainShoutDiv').style.display = "none";
+        }
+
         // give main shout input field the focus
         document.getElementById("mainShout").focus();
     }
 
     componentDidUpdate(prevProps, prevState) {
+        console.log("componentDidUpdate main.js");
         // console.log(this.props.change);
         // console.log("main prevProps: ", prevProps);
         // console.log("main prevState: ", prevState);
@@ -116,44 +144,107 @@ export default class Main extends React.Component {
 
     shout() {
 
-        // loop through the state of postStatuses
-        for (var i = 0; i < this.state.postStatus.length; i++) {
+        let mainShoutText = document.getElementById('mainShout').value.trim();
 
-            // switch through each element of the array
-            switch (this.state.postStatus[i]) {
+        // staging messages: means will check validation for messages before trying to post them.
+        var cont = true;
 
-                case "linkedin":
-                    this.linkedInShare();
-                    alertify.success("Posting linkedIn message.");
-                    this.clearNetworksSelected();
-                    break;
-                case "facebook":
-                    alertify.success("Posting FaceBook message.");
-                    this.clearNetworksSelected();
-                    break;
-                case "instagram":
-                    alertify.success("Posting Instagram message.");
-                    this.clearNetworksSelected();
-                    break;
-                case "twitter":
-                    this.tweet();
-                    document.getElementById("mainShout").value = "";
-                    this.clearNetworksSelected();
-                    break;
-                case "googleplus":
-                    alertify.success("Posting Google Plus message.");
-                    this.clearNetworksSelected();
-                    break;
-                case "pinterest":
-                    alertify.success("Posting to pinterest board.");
-                    this.clearNetworksSelected();
-                    break;
-                case "tumblr":
-                    alertify.success("Posting to Tumblr.");
-                    this.clearNetworksSelected();
-                    break;
-                default:
-                    alertify.error("Error. Tried to post to: " + this.state.postStatus[i] + ".");
+        // first check to see if mainShoutText has any input
+        if (mainShoutText.length <= 0) {
+            cont = false;
+            alertify.error("You must have text in the shout input field.");
+        } else if (this.state.postStatus.length <= 0) {
+            cont = false;
+            alertify.error("Please select a network to send a message to.");
+        } else {
+
+            // if there is input in the main shout field, loop through the networks in the postStatus for validation checks
+            for (var i = 0; i < this.state.postStatus.length; i++) {
+
+                let check = this.state.postStatus[i];
+
+                switch (check) {
+
+                    case "twitter":
+                        if (mainShoutText.length > 140) {
+                            cont = false;
+                            alertify.error("Tweets are limited to a 140 character length. Please type a shorter message.");
+                        }
+
+                        break;
+
+                    case "linkedin":
+                        let description = document.getElementById("linkedInShoutDescription").value.trim();
+                        console.log("linkedin description", description);
+                        let url = document.getElementById("linkedInShoutURL").value.trim();
+                        let image = document.getElementById("linkedInShoutImage").value.trim();
+                        let comment = document.getElementById("linkedInShoutComment").value.trim();
+
+                        if (mainShoutText.length > 200) {
+                            cont = false;
+                            alertify.error("LinkedIn titles are limited to 200 characters. Please shorten the message in the main shout input field.");
+                        }
+
+                        if (description.length > 256) {
+                            cont = false;
+                            alertify.error("LinkedIn descriptions are limited to 256 characters. Please shorten the description.");
+                        }
+
+                        if (url.length <= 0) {
+                            cont = false;
+                            alertify.error("A URL is required to post a LinkedIn message. Please post the URL to the content you are sharing.");
+                        }
+
+                        if (comment.length > 700) {
+                            cont = false;
+                            alertify.error("Comments are limited to 700 characters. Please shorten your comment.");
+                        }
+
+                        break;
+
+                    default:
+                        console.log("Attempted a network not yet accounted for.", this.state.postStatus[i]);
+                }
+            }
+        }
+
+        if (cont) {
+
+            // loop through the state of postStatuses
+            for (i = 0; i < this.state.postStatus.length; i++) {
+
+                // switch through each element of the array
+                switch (this.state.postStatus[i]) {
+
+                    case "linkedin":
+                        this.linkedInShare();
+                        break;
+                    case "facebook":
+                        alertify.success("Posting FaceBook message.");
+                        this.clearNetworksSelected();
+                        break;
+                    case "instagram":
+                        alertify.success("Posting Instagram message.");
+                        this.clearNetworksSelected();
+                        break;
+                    case "twitter":
+                        this.tweet();
+                        break;
+                    case "googleplus":
+                        alertify.success("Posting Google Plus message.");
+                        this.clearNetworksSelected();
+                        break;
+                    case "pinterest":
+                        alertify.success("Posting to pinterest board.");
+                        this.clearNetworksSelected();
+                        break;
+                    case "tumblr":
+                        alertify.success("Posting to Tumblr.");
+                        this.clearNetworksSelected();
+                        break;
+                    default:
+                        alertify.error("Error. Tried to post to: " + this.state.postStatus[i] + ".");
+                }
             }
         }
     }
@@ -207,12 +298,15 @@ export default class Main extends React.Component {
                 restObject: options
             }).then(result => {
 
-				// clear out values from input fields
-				document.getElementById('mainShout').value = "";
-				document.getElementById('linkedInShoutDescription').value = "";
-				document.getElementById('linkedInShoutURL').value = "";
-				document.getElementById('linkedInShoutImage').value = "";
-				document.getElementById('linkedInShoutComment').value = "";
+                // clear out values from input fields
+                document.getElementById('mainShout').value = "";
+                document.getElementById('linkedInShoutDescription').value = "";
+                document.getElementById('linkedInShoutURL').value = "";
+                document.getElementById('linkedInShoutImage').value = "";
+                document.getElementById('linkedInShoutComment').value = "";
+
+                alertify.success("Posting linkedIn message.");
+                this.clearNetworksSelected();
 
             }).catch(error => {
                 console.log("/linkedInShare error: ", error);
@@ -239,6 +333,8 @@ export default class Main extends React.Component {
                 message: tweet
             }).then((result) => {
                 console.log("/tweet result: ", result);
+                document.getElementById("mainShout").value = "";
+                this.clearNetworksSelected();
             }).catch((error) => {
                 console.log("/tweet error: ", error);
             });
@@ -252,6 +348,13 @@ export default class Main extends React.Component {
             targets[i].setAttribute("data-selected", false);
             targets[i].style.color = "#695d46";
         }
+
+        // clear the data in state.postStatus
+        this.setState({postStatus: []});
+        console.log(this.state.postStatus);
+
+        // close options bar
+        this.closeOptionsBar();
     }
 
     authorizeNetworkBox(e) {
@@ -318,45 +421,52 @@ export default class Main extends React.Component {
                     <SideList name="Tweets" tweets={this.state.tweets}/>
                 </aside>
 
+                <div id="welcomeScreen">
+                    <h3>Welcome</h3>
+                    <p>Please log in to SHOUT!</p>
+                </div>
+
                 <div id="mainShoutDiv">
-                    <input id="mainShout" placeholder="type your shout here"/>
-                    <button className="btn btn-primary bg-accent text-bg-main" onClick={this.shout}>Shout</button>
-                </div>
-                <div id="socialChecks">
-                    <NetworkBox toggleState={this.toggleNetworkState} network={networks.linkedin}/>
-                    <NetworkBox toggleState={this.toggleNetworkState} network={networks.facebook}/>
-                    <NetworkBox toggleState={this.toggleNetworkState} network={networks.instagram}/>
-                    <NetworkBox toggleState={this.toggleNetworkState} network={networks.twitter}/>
-                    <NetworkBox toggleState={this.toggleNetworkState} network={networks.googleplus}/>
-                    <NetworkBox toggleState={this.toggleNetworkState} network={networks.pinterest}/>
-                    <NetworkBox toggleState={this.toggleNetworkState} network={networks.tumblr}/>
-                </div>
-                <div id="socialAuthorization" className="hidden">
-                    <h2>Authorize Social Networks</h2>
-                    <p>Click the below buttons to authorize Shout to make and read posts on your behalf.</p>
-                    <br/>
                     <div>
-                        <a onClick={this.authorizeNetworkBox}>
-                            <i data-name="LinkedIn" className="fa fa-linkedin-square fa-3x hvr-grow"></i>
-                        </a>
-                        <a onClick={this.authorizeNetworkBox}>
-                            <i data-name="Facebook" className="fa fa-facebook-square fa-3x hvr-grow"></i>
-                        </a>
-                        <a onClick={this.authorizeNetworkBox}>
-                            <i data-name="Instagram" className="fa fa-instagram fa-3x hvr-grow"></i>
-                        </a>
-                        <a onClick={this.authorizeNetworkBox}>
-                            <i data-name="Twitter" className="fa fa-twitter-square fa-3x hvr-grow"></i>
-                        </a>
-                        <a onClick={this.authorizeNetworkBox}>
-                            <i data-name="GooglePlus" className="fa fa-google-plus-square fa-3x hvr-grow"></i>
-                        </a>
-                        <a onClick={this.authorizeNetworkBox}>
-                            <i data-name="Pinterest" className="fa fa-pinterest-square fa-3x hvr-grow"></i>
-                        </a>
-                        <a onClick={this.authorizeNetworkBox}>
-                            <i data-name="Tumblr" className="fa fa-tumblr-square fa-3x hvr-grow"></i>
-                        </a>
+                        <input id="mainShout" placeholder="type your shout here"/>
+                        <button className="btn btn-primary bg-accent text-bg-main" onClick={this.shout}>Shout</button>
+                    </div>
+                    <div id="socialChecks">
+                        <NetworkBox toggleState={this.toggleNetworkState} network={networks.linkedin}/>
+                        <NetworkBox toggleState={this.toggleNetworkState} network={networks.facebook}/>
+                        <NetworkBox toggleState={this.toggleNetworkState} network={networks.instagram}/>
+                        <NetworkBox toggleState={this.toggleNetworkState} network={networks.twitter}/>
+                        <NetworkBox toggleState={this.toggleNetworkState} network={networks.googleplus}/>
+                        <NetworkBox toggleState={this.toggleNetworkState} network={networks.pinterest}/>
+                        <NetworkBox toggleState={this.toggleNetworkState} network={networks.tumblr}/>
+                    </div>
+                    <div id="socialAuthorization" className="hidden">
+                        <h2>Authorize Social Networks</h2>
+                        <p>Click the below buttons to authorize Shout to make and read posts on your behalf.</p>
+                        <br/>
+                        <div>
+                            <a onClick={this.authorizeNetworkBox}>
+                                <i data-name="LinkedIn" className="fa fa-linkedin-square fa-3x hvr-grow"></i>
+                            </a>
+                            <a onClick={this.authorizeNetworkBox}>
+                                <i data-name="Facebook" className="fa fa-facebook-square fa-3x hvr-grow"></i>
+                            </a>
+                            <a onClick={this.authorizeNetworkBox}>
+                                <i data-name="Instagram" className="fa fa-instagram fa-3x hvr-grow"></i>
+                            </a>
+                            <a onClick={this.authorizeNetworkBox}>
+                                <i data-name="Twitter" className="fa fa-twitter-square fa-3x hvr-grow"></i>
+                            </a>
+                            <a onClick={this.authorizeNetworkBox}>
+                                <i data-name="GooglePlus" className="fa fa-google-plus-square fa-3x hvr-grow"></i>
+                            </a>
+                            <a onClick={this.authorizeNetworkBox}>
+                                <i data-name="Pinterest" className="fa fa-pinterest-square fa-3x hvr-grow"></i>
+                            </a>
+                            <a onClick={this.authorizeNetworkBox}>
+                                <i data-name="Tumblr" className="fa fa-tumblr-square fa-3x hvr-grow"></i>
+                            </a>
+                        </div>
                     </div>
                 </div>
 
@@ -366,12 +476,12 @@ export default class Main extends React.Component {
                         <div className="networkOptions">
                             <form>
                                 <div><input id="linkedInShoutDescription" type="text" placeholder="description"/></div>
-                                <div><input id="linkedInShoutURL" type="text" placeholder="url to actual message"/></div>
+                                <div><input id="linkedInShoutURL" type="text" placeholder="url to actual message (required)"/></div>
                                 <div><input id="linkedInShoutImage" type="text" placeholder="image url"/></div>
                                 <div><textarea id="linkedInShoutComment" type="text" placeholder="comment"/></div>
                                 <div>
-									
-									<input type="radio" name="linkedInVisibility" value="anyone" defaultChecked/>Anyone
+
+                                    <input type="radio" name="linkedInVisibility" value="anyone" defaultChecked/>Anyone
                                     <input type="radio" name="linkedInVisibility" value="connections-only"/>Connections Only
                                 </div>
                             </form>

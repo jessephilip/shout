@@ -11,6 +11,13 @@ $mainFont: 'Raleway', sans-serif;
 $accentFont: 'Open Sans', sans-serif;
 /* ---------- Spacing Values ---------- */
 /* CSS */
+
+// Welcome Screen //
+
+#welcomeScreen {
+	text-align: center;
+}
+
 #optionsBar {
 	position: absolute;
 	padding-top: 68px; // TODO: switch this out to a variable
