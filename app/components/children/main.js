@@ -11,7 +11,8 @@
 // TODO: let the user know what pieces are what when multiple windows pop up for a linkedin message
 // TODO: change the highlight color of the input field
 // TODO: use different color error messages for the different color networks
-// TODO: Style header better. Use sass for 
+// TODO: Style header better. Use sass to make heights universal for nav bar and footer
+// TODO: set automatic login as an option
 
 // Include React
 import React from "react";
@@ -58,7 +59,6 @@ export default class Main extends React.Component {
             }
 
         } catch (err) {
-            console.log("No user logged in.");
             document.getElementById('mainShoutDiv').style.display = "none";
         }
 
@@ -67,7 +67,7 @@ export default class Main extends React.Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
-        console.log("componentDidUpdate main.js");
+        // console.log("componentDidUpdate main.js");
         // console.log(this.props.change);
         // console.log("main prevProps: ", prevProps);
         // console.log("main prevState: ", prevState);
@@ -86,14 +86,14 @@ export default class Main extends React.Component {
     }
 
     toggleNetworkState(newState, bool) {
-        console.log(newState, bool);
+        // console.log(newState, bool);
         let present = this.state.postStatus;
         // console.log(present);
 
         // add newState to array if boolean is true and it is not already in the array
         if (bool && present.indexOf(newState) === -1) {
             present.push(newState);
-            console.log(present);
+            // console.log(present);
             this.setState({postStatus: present});
         }
 
@@ -101,7 +101,7 @@ export default class Main extends React.Component {
         if (!bool && present.indexOf(newState) >= 0) {
             present.splice(present.indexOf(newState), 1);
             this.setState({postStatus: present});
-            console.log(present);
+            // console.log(present);
         }
 
         // open the options bar if at least one network is selected for posting
@@ -131,13 +131,11 @@ export default class Main extends React.Component {
 
     // this function will open up the options side bar
     openOptionsBar() {
-        console.log("open options bar");
         document.getElementById('optionsBar').style.width = "33%";
     }
 
     // this function will close the options side bar
     closeOptionsBar() {
-        console.log("close options bar");
         document.getElementById('optionsBar').style.width = "0px";
     }
 
@@ -331,8 +329,9 @@ export default class Main extends React.Component {
                 username: username,
                 message: tweet
             }).then((result) => {
-                console.log("/tweet result: ", result);
+                // console.log("/tweet result: ", result);
                 document.getElementById("mainShout").value = "";
+				alertify.success("Congrats! That Tweet was awesome!");
                 this.clearNetworksSelected();
             }).catch((error) => {
                 console.log("/tweet error: ", error);
@@ -350,7 +349,7 @@ export default class Main extends React.Component {
 
         // clear the data in state.postStatus
         this.setState({postStatus: []});
-        console.log(this.state.postStatus);
+        // console.log(this.state.postStatus);
 
         // close options bar
         this.closeOptionsBar();
@@ -379,7 +378,7 @@ export default class Main extends React.Component {
 
             // api call to getClientId. Returns a promise.
             axios.get("/getClientId", options).then((result) => {
-                console.log(result);
+                // console.log(result);
 
                 // object to hold header values
                 let authObject = {

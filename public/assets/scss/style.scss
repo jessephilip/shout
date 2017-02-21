@@ -1,0 +1,260 @@
+/* ---------- Colors ---------- */
+/* Backgrounds */
+$mainBackground: #fff6c5;
+$accentBackground: #a1e8d9;
+$altBackground: #cfc291;
+/* Texts */
+$mainText: #695d46;
+$accentText: #ff712c;
+/* ---------- Fonts ---------- */
+$mainFont: 'Raleway', sans-serif;
+$accentFont: 'Open Sans', sans-serif;
+/* ---------- Spacing Values ---------- */
+$minWidth: 1vw;
+$minHeight: 1vh;
+
+$headerHeight: 15vh;
+$footerHeight: 10vh;
+
+/* CSS */
+
+// Globals //
+
+button {
+	cursor: pointer;
+}
+
+a:hover {
+    cursor: pointer;
+}
+
+body {
+    color: $mainText;
+}
+
+.tooltip-inner {
+	color: $mainBackground;
+	background-color: $accentText;
+}
+
+#loginName {
+	margin-right: 10px;
+}
+
+/* ---------- Options Aside ---------- */
+#optionsAside .fa-cloud, .fa-sign-out {
+	margin: 0 10px;
+}
+
+/* ---------- Authorization Squares ---------- */
+#socialAuthorization {
+	flex-direction: column;
+	text-align: center;
+}
+
+#socialAuthorization .fa {
+	padding: 0 10px;
+}
+
+#individualAuthorization {
+	flex-direction: column;
+	text-align: center;
+}
+
+// Global Classes //
+
+/* ---------- Text Color Classes ---------- */
+
+.text-main {
+    color: $mainText;
+}
+
+.text-accent {
+    color: $accentText;
+}
+
+.text-bg-main {
+	color: $mainBackground;
+}
+
+.text-bg-accent {
+	color: $accentBackground;
+}
+
+
+/* ---------- Background Color Classes ---------- */
+
+.bg-main {
+    background-color: $mainBackground;
+}
+
+.bg-accent {
+    background-color: $accentBackground;
+}
+
+.bg-alt {
+    background-color: $altBackground;
+}
+
+
+/* ---------- Button Color Classes ---------- */
+
+.btn-primary {
+    background-color: $mainText;
+	border: 1px solid $mainText;
+}
+
+.btn-primary:hover {
+	background-color: $accentText;
+	border: 1px solid $accentText;
+}
+
+.btn-outline-primary {
+	background-color: transparent;
+	border: 1px solid $mainText;
+	color: $mainText;
+}
+
+.btn-outline-primary:hover {
+	background-color: $accentText;
+	border: 1px solid $accentText;
+	color: $accentBackground;
+}
+
+/* ---------- Show and Hide ---------- */
+
+.hidden {
+    display: none;
+}
+
+.show {
+    display: inherit;
+}
+
+// DOM Elements in header.js //
+
+.navbar {
+    color: $mainText;
+	height: $headerHeight;
+
+	button[value="submit"] {
+		margin-left: $minWidth/2;
+		margin-right: $minWidth/2;
+	}
+}
+
+#navOutput {
+	padding-left: $minWidth;
+	padding-right: $minWidth;
+}
+
+#signedInAside {
+	text-align: center;
+}
+
+#loginButton {
+	margin-right: 5px;
+
+}
+
+#signUpButton {
+	margin-left: 5px;
+}
+
+// DOM Elements in main.js //
+
+#mainShoutDiv {
+	text-align: center;
+}
+
+// Welcome Screen //
+
+#welcomeScreen {
+	text-align: center;
+}
+
+#optionsBar {
+	position: absolute;
+	padding-top: $headerHeight;
+	padding-bottom: $footerHeight;
+	right: 0;
+	width: 0;
+	top: 0;
+	height: 100%;
+	background-color: $altBackground;
+	transition: 1s;
+	overflow-y: scroll;
+
+	.networkOptions {
+		width: 100%;
+
+		form {
+
+			div {
+				margin-left: $minWidth;
+				margin-right: $minWidth;
+			}
+		}
+
+		input[type="text"] {
+			width: 100%;
+			margin: 1vh auto;
+		}
+
+		input[type="radio"] {
+			margin: 1vh 1vw;
+		}
+
+		textarea {
+			width: 100%;
+			margin: 1vh auto;
+		}
+	}
+
+	h4 {
+		text-align: center;
+		padding-top: $minHeight;
+		padding-bottom: $minHeight;
+	}
+}
+
+main {
+    position: absolute;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: $mainText;
+}
+
+#mainShout {
+	margin: 0 10px;
+}
+
+#socialChecks a {
+	margin: 5px;
+}
+
+#sideBar {
+	position: absolute;
+	padding-top: $headerHeight;
+	padding-bottom: $footerHeight;
+	left: -33%;
+	width: 33%;
+	top: 0;
+	height: 100%;
+	transition: 1s;
+	overflow-y: scroll;
+}
+
+// footer //
+
+footer {
+    height: $footerHeight;
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+}

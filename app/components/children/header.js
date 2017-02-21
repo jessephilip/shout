@@ -61,7 +61,6 @@ export default class Header extends React.Component {
         let username = localStorage.getItem("shoutUserNameLS");
 
         // check if user was previously signed in
-        //TODO: set this up as an option in the database. Only allow automatic login if that option is selected.
         if (username) {
 
             // if user was previously logged in, hide login and signup buttons and provide welcome message to user
@@ -122,35 +121,33 @@ export default class Header extends React.Component {
     }
 
     loginCancel() {
-		console.log("login cancel clicked");
 
-		// hide stuff
-		document.getElementById('loginForm').setAttribute("class", "hidden");
-		document.getElementById('loginPassword').setAttribute("class", "hidden");
+        // hide stuff
+        document.getElementById('loginForm').setAttribute("class", "hidden");
+        document.getElementById('loginPassword').setAttribute("class", "hidden");
 
-		// show stuff
-		document.getElementById('loginDiv').setAttribute("class", "show");
-		document.getElementById('loginUsername').setAttribute("class", "show");
+        // show stuff
+        document.getElementById('loginDiv').setAttribute("class", "show");
+        document.getElementById('loginUsername').setAttribute("class", "show");
 
-		// reset values
-		this.login = {};
+        // reset values
+        this.login = {};
 
-	}
+    }
 
     signUpCancel() {
-		console.log("login cancel clicked");
 
-		// hide stuff
-		document.getElementById('signUpForm').setAttribute("class", "hidden");
-		document.getElementById('signUpPassword').setAttribute("class", "hidden");
+        // hide stuff
+        document.getElementById('signUpForm').setAttribute("class", "hidden");
+        document.getElementById('signUpPassword').setAttribute("class", "hidden");
 
-		// show stuff
-		document.getElementById('loginDiv').setAttribute("class", "show");
-		document.getElementById('signUpUsername').setAttribute("class", "show");
+        // show stuff
+        document.getElementById('loginDiv').setAttribute("class", "show");
+        document.getElementById('signUpUsername').setAttribute("class", "show");
 
-		// reset values
-		this.signUp = {};
-	}
+        // reset values
+        this.signUp = {};
+    }
 
     // funtion governing the login submit button
     loginSubmit() {
@@ -172,8 +169,8 @@ export default class Header extends React.Component {
             // hide login input field
             loginUsername.setAttribute("class", "hidden");
 
-			// update the placeholder text for loginPassword
-			loginPassword.setAttribute("placeholder", "password for " + this.login.username);
+            // update the placeholder text for loginPassword
+            loginPassword.setAttribute("placeholder", "password for " + this.login.username);
 
             // show password input field
             loginPassword.setAttribute("class", "show");
@@ -240,8 +237,7 @@ export default class Header extends React.Component {
                 loginUsername.setAttribute("class", "show");
 
             }).catch((error) => {
-                console.log("error");
-                alertify.error("errored.");
+                alertify.error(`Given password for ${this.login.username} was incorrect. Please try again.`);
             });
 
         }
@@ -268,6 +264,9 @@ export default class Header extends React.Component {
             // clear the user data inputted in the input field
             signUpUsername.value = "";
 
+            // update placeholder text for signUpPassword
+            signUpPassword.setAttribute("placeholder", "password for " + this.signUp.username);
+
             // hide login input field
             signUpUsername.setAttribute("class", "hidden");
 
@@ -280,11 +279,16 @@ export default class Header extends React.Component {
 
         if (signUpPassword.value) {
 
+            console.log(this.signUp.username);
+
             // save value to login object
             this.signUp.password = signUpPassword.value;
 
             // clear the user data inputted in the input field
             signUpPassword.value = "";
+
+            // update placeholder text for signUpPassword
+            signUpConfirm.setAttribute("placeholder", "confirm password for " + this.signUp.username);
 
             // hide login input field
             signUpPassword.setAttribute("class", "hidden");
@@ -298,6 +302,9 @@ export default class Header extends React.Component {
 
         if (signUpConfirm.value) {
 
+            // update placeholder text for signUpConfirm
+            signUpConfirm.setAttribute("placeholder", "confirm password for " + this.signUp.username);
+
             // save value to login object
             this.signUp.confirm = signUpConfirm.value;
 
@@ -307,52 +314,113 @@ export default class Header extends React.Component {
         }
 
         // if the user has inputted values for username, password, and confirmed that password with a matching password, do the following
-        if (this.signUp.username && this.signUp.password && this.signUp.confirm && (this.signUp.password == this.signUp.confirm)) {
+        if (this.signUp.username && this.signUp.password && this.signUp.confirm) {
 
-            // prepare object to send to api call
-            let userObject = {
-                username: this.signUp.username,
-                password: this.signUp.password,
-                confirm: this.signUp.confirm
-            };
+            if (this.signUp.password != this.signUp.confirm) {
 
-            // api call to /createUser
-            axios.post("/createUser", userObject).then((result) => {
+                // send message to the user that the password and confirm do not match
+                alertify.error("Password and Confirm do not match. Please try again.");
 
-                // if server returns a result but that result contains a MongoDb error message, handle that error.
-                if (result.data.hasOwnProperty("errmsg")) {
-                    alertify.error(`Error." ${result.data.errmsg}` // if no error returned, handle signup procedures
-                    );
-                } else {
+                // reset password and confirm password
+                delete this.signUp.password;
+                delete this.signUp.confirm;
 
-                    // provide visual cues to the user
-                    alertify.success(`Congrats. ${result.data.username} created.`);
-                    alertify.success(`${result.data.username} signed in.`);
+                // hide confirm password
+                signUpConfirm.setAttribute("class", "hidden");
 
-                    // if username item is present in local storage, delete it
-                    localStorage.removeItem("shoutUserNameLS");
+                // show password
+                signUpPassword.setAttribute("class", "show");
 
-                    // set username to local storage
-                    localStorage.setItem("shoutUserNameLS", result.data.username);
-                    this.setState({username: result.data.username})
+				// give focus to signUpPassword
+				signUpPassword.focus();
 
-                    // hide sign up aside
-                    document.getElementById("signUpForm").setAttribute("class", "hidden");
+            } else {
 
-                    // show signed in aside
-                    document.getElementById("signedInAside").setAttribute("class", "show");
+                // prepare object to send to api call
+                let userObject = {
+                    username: this.signUp.username,
+                    password: this.signUp.password,
+                    confirm: this.signUp.confirm
+                };
 
-                    // hide welcomeScreen
-                    document.getElementById('welcomeScreen').style.display = "none";
+                // api call to /createUser
+                axios.post("/createUser", userObject).then(result => {
 
-                    // show mainShoutDiv
-                    document.getElementById('mainShoutDiv').style.display = "initial";
+                    // if server returns a result but that result contains a MongoDb error message, handle that error.
+                    if (result.data.hasOwnProperty("errmsg")) {
+                        console.log(result.data.errmsg);
 
-                }
-            }).catch((error) => {
-                console.log("createUser error: ", error);
-            });
+                        let check = result.data.errmsg.includes("E11000");
+						console.log(check);
 
+                        if (check) {
+
+							// notify the user that they attepted a username that is already taken
+                            alertify.error(`${this.signUp.username} is already taken. Please try a different username.`);
+
+							// reset this.signUp
+							this.signUp = {};
+
+							// hide stuff
+							signUpPassword.setAttribute("class", "hidden");
+							signUpConfirm.setAttribute("class", "hidden");
+
+							// show stuff
+							signUpUsername.setAttribute("class", "show");
+
+							// give signUpUsername focus
+							signUpUsername.focus();
+
+                        }
+						else {
+							alertify.error("There was some other error Shout is unaware of. Oh no!!!");
+						}
+
+                    // if no error returned, handle signup procedures
+                    } else {
+
+                        // provide visual cues to the user
+                        alertify.success(`Congrats. ${result.data.username} created.`);
+                        alertify.success(`${result.data.username} signed in.`);
+
+                        // if username item is present in local storage, delete it
+                        localStorage.removeItem("shoutUserNameLS");
+
+                        // set username to local storage
+                        localStorage.setItem("shoutUserNameLS", result.data.username);
+                        this.setState({username: result.data.username})
+
+                        // hide sign up aside
+                        document.getElementById("signUpForm").setAttribute("class", "hidden");
+
+                        // show signed in aside
+                        document.getElementById("signedInAside").setAttribute("class", "show");
+
+                        // hide welcomeScreen
+                        document.getElementById('welcomeScreen').style.display = "none";
+
+                        // show mainShoutDiv
+                        document.getElementById('mainShoutDiv').style.display = "initial";
+
+						// reset this.signUp in case another user account is set up
+						this.signUp = {};
+
+						// hide stuff
+						signUpPassword.setAttribute("class", "hidden");
+						signUpConfirm.setAttribute("class", "hidden");
+
+						// show stuff
+						signUpUsername.setAttribute("class", "show");
+
+						// give focus to the mainShout Input Field
+						document.getElementById('mainShout').focus();
+
+                    }
+                }).catch((error) => {
+                    console.log("createUser error: ", error);
+                });
+
+            }
         }
 
     }
@@ -372,14 +440,14 @@ export default class Header extends React.Component {
         // hide sign up aside
         document.getElementById("optionsAside").setAttribute("class", "hidden");
 
-		// hide socialAuthorize
-		document.getElementById('socialAuthorization').style.display = 'none';
+        // hide socialAuthorize
+        document.getElementById('socialAuthorization').style.display = 'none';
 
         // show signed in aside
         document.getElementById("signedInAside").setAttribute("class", "show");
 
-		// show mainShoutDiv
-		document.getElementById('mainShoutDiv').style.display = 'initial';
+        // show mainShoutDiv
+        document.getElementById('mainShoutDiv').style.display = 'initial';
 
     }
 
@@ -409,8 +477,6 @@ export default class Header extends React.Component {
         this.setState({username: ""});
         this.login = {};
         this.signUp = {};
-        console.log("login: ", this.login);
-        console.log("signUp: ", this.signUp);
 
     }
 
@@ -441,22 +507,24 @@ export default class Header extends React.Component {
                 <aside id="loginForm" className="hidden">
                     <input id="loginUsername" type="text" placeholder="login username"/>
                     <input id="loginPassword" type="password" className="hidden" placeholder="password"/>
-                    <button type="submit" className="btn btn-primary btn-sm" onClick={this.loginSubmit}>Submit</button>
-                    <button type="submit" className="btn btn-primary btn-sm" onClick={this.loginCancel}>Cancel</button>
+                    <button type="submit" className="btn btn-primary btn-sm" onClick={this.loginSubmit} value="submit">Submit</button>
+                    <button type="submit" className="btn btn-primary btn-sm" onClick={this.loginCancel} value="cancel">Cancel</button>
                 </aside>
                 <aside id="signUpForm" className="hidden">
                     <input id="signUpUsername" type="text" placeholder="desired username"/>
-                    <input id="signUpPassword" type="password" className="hidden" placeholder="desired password"/>
+                    <input id="signUpPassword" type="password" className="hidden" placeholder="password"/>
                     <input id="signUpConfirm" type="password" className="hidden" placeholder="confirm password"/>
-                    <button type="submit" className="btn btn-primary btn-sm" onClick={this.loginSubmit}>Submit</button>
-                    <button type="submit" className="btn btn-primary btn-sm" onClick={this.signUpCancel}>Cancel</button>
+                    <button type="submit" className="btn btn-primary btn-sm" onClick={this.signUpSubmit} value="submit">Submit</button>
+                    <button type="submit" className="btn btn-primary btn-sm" onClick={this.signUpCancel} value="cancel">Cancel</button>
                 </aside>
                 <aside id="signedInAside" className="hidden">
                     <div>
                         <span>
-                            <a onClick={this.optionsClick}>
+                            <a data-toggle="tooltip" data-placement="left" title="user options" onClick={this.optionsClick}>
+                                <div>
+                                    <i className="fa fa-user fa-2x"></i>
+                                </div>
                                 <span>{this.state.username}</span>
-                                <i className="fa fa-user fa-2x" data-toggle="tooltip" data-placement="left" title="user options"></i>
                             </a>
                         </span>
                     </div>
