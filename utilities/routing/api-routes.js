@@ -284,6 +284,10 @@ module.exports = (app) => {
     // TWITTER ROUTES
 
     app.get("/twitterCallback", (req, res) => {
+		console.log("twitterCallback hit");
+
+		console.log(req);
+
         let tokens = {
             oauth_token: req.query.oauth_token,
             oauth_verifier: req.query.oauth_verifier
@@ -313,6 +317,7 @@ module.exports = (app) => {
 
     // sign in with twitter
     app.post("/authorizeTwitter", (req, res) => {
+		console.log("authorizeTwitter hit");
 
         // get username passed in arguments
         let username = req.body.username;

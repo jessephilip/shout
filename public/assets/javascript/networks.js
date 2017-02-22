@@ -27,6 +27,13 @@ module.exports = {
 			axios.post("/authorizeTwitter", {username: username}).then( function (authorizeResult) {
 				console.log("/authorizeTwitter success: ", authorizeResult);
 				window.open("https://api.twitter.com/oauth/authorize?oauth_token=" + authorizeResult.data.temp.token);
+
+				// clear previous value of username, if any, from localStorage
+                localStorage.removeItem("shoutTwitterTempOAuthToken");
+
+                // store username to local storage
+                localStorage.setItem("shoutTwitterTempOAuthToken", authorizeResult.data.temp.token);
+
 			}).catch( function (authorizeError) {
 				console.log("/authorizeTwitter error: ", authorizeError);
 			});

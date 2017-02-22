@@ -271,6 +271,12 @@ main {
 	overflow-y: scroll;
 }
 
+#twitterPin {
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
 // footer //
 
 footer {

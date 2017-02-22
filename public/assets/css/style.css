@@ -88,7 +88,7 @@ body {
 .navbar {
   color: #695d46;
   height: 15vh;
-  box-shadow: 0px 1px 1px #cfc291; }
+  box-shadow: 0px 1px 5px #cfc291; }
   .navbar #leftNav {
     display: flex;
     justify-content: flex-start;
@@ -182,6 +182,11 @@ main {
   height: 100%;
   transition: 1s;
   overflow-y: scroll; }
+
+#twitterPin {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; }
 
 footer {
   height: 10vh;

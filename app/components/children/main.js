@@ -44,6 +44,7 @@ export default class Main extends React.Component {
         this.authorizeNetworkBox = this.authorizeNetworkBox.bind(this);
         this.openOptionsBar = this.openOptionsBar.bind(this);
         this.closeOptionsBar = this.closeOptionsBar.bind(this);
+        this.twitterPinSubmit = this.twitterPinSubmit.bind(this);
     }
 
     componentDidMount() {
@@ -406,9 +407,44 @@ export default class Main extends React.Component {
                 console.log(error);
             });
 
-        } else
+        } else if (name.toLowerCase() == "twitter") {
+
+            // hide stuff
+            document.getElementById('socialAuthorization').style.display = "none";
+
+            // show stuff
+            document.getElementById('twitterPin').setAttribute("class", "show");
+
+            // twitter call
+            networks[name.toLowerCase()].authorize(username);
+        } else {
             networks[name.toLowerCase()].authorize(username);
         }
+    }
+
+    twitterPinSubmit() {
+
+        let pin = document.getElementById('pin').value.trim();
+        console.log(pin);
+
+        let tempOauth = localStorage.getItem("shoutTwitterTempOAuthToken");
+        console.log(tempOauth);
+
+        let params = {
+            oauth_token: tempOauth,
+            oauth_verifier: pin
+        };
+
+        axios.get("/twitterCallback", {params}).then(result => {
+            // console.log(result);
+
+            document.getElementById('twitterPin').innerHTML = "<h1>Success!! Go Back to Shout!!!</h1>";
+
+        }).catch(error => {
+            document.getElementById('twitterPin').innerHTML = "Something went wrong. Please try again.";
+        });
+
+    }
 
     // Here we render the function
     render() {
@@ -466,6 +502,14 @@ export default class Main extends React.Component {
                             <i data-name="Tumblr" className="fa fa-tumblr-square fa-3x hvr-grow"></i>
                         </a> */}
                     </div>
+                </div>
+                <div id="twitterPin" className="hidden">
+                    <h2>Insert Twitter PIN</h2>
+                    <p>Proceed to the popup window/tab and authorize Shout to use Twitter.</p>
+                    <p>Then, input the PIN number in the field below</p>
+                    <input id="pin" placeholder="Twitter PIN"/>
+                    <br/>
+                    <button className="btn btn-primary bg-accent text-bg-main" onClick={this.twitterPinSubmit}>Submit</button>
                 </div>
                 <aside id="optionsBar">
                     <article id="linkedinOptions">

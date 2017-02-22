@@ -442,6 +442,9 @@ export default class Header extends React.Component {
         // hide socialAuthorize
         document.getElementById('socialAuthorization').style.display = 'none';
 
+		// hide #twitterPin
+		document.getElementById('twitterPin').setAttribute("class", "hidden");
+
         // show signed in aside
         document.getElementById("signedInAside").setAttribute("class", "show");
 
@@ -468,6 +471,9 @@ export default class Header extends React.Component {
         // hide socialAuthorization
         document.getElementById('socialAuthorization').style.display = "none";
 
+		// hide #twitterPin
+		document.getElementById('twitterPin').setAttribute("class", "hidden");
+
         // show welcomeScreen
         document.getElementById('welcomeScreen').style.display = "initial";
 
@@ -483,6 +489,9 @@ export default class Header extends React.Component {
 
         // hide mainShoutDiv
         document.getElementById('mainShoutDiv').style.display = "none";
+
+		// hide #twitterPin
+		document.getElementById('twitterPin').setAttribute("class", "hidden");
 
         // show authorize section
         document.getElementById('socialAuthorization').style.display = "initial";
