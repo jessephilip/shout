@@ -331,7 +331,7 @@ export default class Main extends React.Component {
             }).then((result) => {
                 // console.log("/tweet result: ", result);
                 document.getElementById("mainShout").value = "";
-				alertify.success("Congrats! That Tweet was awesome!");
+                alertify.success("Congrats! That Tweet was awesome!");
                 this.clearNetworksSelected();
             }).catch((error) => {
                 console.log("/tweet error: ", error);
@@ -418,25 +418,25 @@ export default class Main extends React.Component {
                 <aside id="sideBar" className="bg-alt" data-open="false">
                     <SideList name="Tweets" tweets={this.state.tweets}/>
                 </aside>
-
                 <div id="welcomeScreen">
                     <h3>Welcome</h3>
                     <p>Please log in to SHOUT!</p>
                 </div>
-
                 <div id="mainShoutDiv">
                     <div>
-                        <input id="mainShout" placeholder="type your shout here"/>
-                        <button className="btn btn-primary bg-accent text-bg-main" onClick={this.shout}>Shout</button>
+                        <div>
+                            <textarea id="mainShout" placeholder="type your shout here"/>
+                        </div>
                     </div>
                     <div id="socialChecks">
-                        <NetworkBox toggleState={this.toggleNetworkState} network={networks.linkedin}/>
-                        <NetworkBox toggleState={this.toggleNetworkState} network={networks.facebook}/>
-                        <NetworkBox toggleState={this.toggleNetworkState} network={networks.instagram}/>
-                        <NetworkBox toggleState={this.toggleNetworkState} network={networks.twitter}/>
-                        <NetworkBox toggleState={this.toggleNetworkState} network={networks.googleplus}/>
+                        <NetworkBox toggleState={this.toggleNetworkState} network={networks.linkedin}/> {/* <NetworkBox toggleState={this.toggleNetworkState} network={networks.facebook}/>
+                        <NetworkBox toggleState={this.toggleNetworkState} network={networks.instagram}/> */}
+                        <NetworkBox toggleState={this.toggleNetworkState} network={networks.twitter}/> {/* <NetworkBox toggleState={this.toggleNetworkState} network={networks.googleplus}/>
                         <NetworkBox toggleState={this.toggleNetworkState} network={networks.pinterest}/>
-                        <NetworkBox toggleState={this.toggleNetworkState} network={networks.tumblr}/>
+                        <NetworkBox toggleState={this.toggleNetworkState} network={networks.tumblr}/> */}
+                    </div>
+                    <div>
+                        <button className="btn btn-primary bg-accent text-bg-main" onClick={this.shout}>Shout</button>
                     </div>
                 </div>
                 <div id="socialAuthorization" className="hidden">
@@ -447,16 +447,16 @@ export default class Main extends React.Component {
                         <a onClick={this.authorizeNetworkBox}>
                             <i data-name="LinkedIn" className="fa fa-linkedin-square fa-3x hvr-grow"></i>
                         </a>
-                        <a onClick={this.authorizeNetworkBox}>
+                        {/* <a onClick={this.authorizeNetworkBox}>
                             <i data-name="Facebook" className="fa fa-facebook-square fa-3x hvr-grow"></i>
                         </a>
                         <a onClick={this.authorizeNetworkBox}>
                             <i data-name="Instagram" className="fa fa-instagram fa-3x hvr-grow"></i>
-                        </a>
+                        </a> */}
                         <a onClick={this.authorizeNetworkBox}>
                             <i data-name="Twitter" className="fa fa-twitter-square fa-3x hvr-grow"></i>
                         </a>
-                        <a onClick={this.authorizeNetworkBox}>
+                        {/* <a onClick={this.authorizeNetworkBox}>
                             <i data-name="GooglePlus" className="fa fa-google-plus-square fa-3x hvr-grow"></i>
                         </a>
                         <a onClick={this.authorizeNetworkBox}>
@@ -464,10 +464,9 @@ export default class Main extends React.Component {
                         </a>
                         <a onClick={this.authorizeNetworkBox}>
                             <i data-name="Tumblr" className="fa fa-tumblr-square fa-3x hvr-grow"></i>
-                        </a>
+                        </a> */}
                     </div>
                 </div>
-
                 <aside id="optionsBar">
                     <article id="linkedinOptions">
                         <h4>LinkedIn Options</h4>
@@ -478,7 +477,6 @@ export default class Main extends React.Component {
                                 <div><input id="linkedInShoutImage" type="text" placeholder="image url"/></div>
                                 <div><textarea id="linkedInShoutComment" type="text" placeholder="comment"/></div>
                                 <div>
-
                                     <input type="radio" name="linkedInVisibility" value="anyone" defaultChecked/>Anyone
                                     <input type="radio" name="linkedInVisibility" value="connections-only"/>Connections Only
                                 </div>
@@ -491,9 +489,9 @@ export default class Main extends React.Component {
                     <article id="instagramOptions">
                         <h4>Instagram Options</h4>
                     </article>
-                    <article id="twitterOptions">
+                    {/* <article id="twitterOptions">
                         <h4>Twitter Options</h4>
-                    </article>
+                    </article> */}
                     <article id="googleplusOptions">
                         <h4>Google Plus Options</h4>
                     </article>
@@ -504,7 +502,6 @@ export default class Main extends React.Component {
                         <h4>Tumblr Options</h4>
                     </article>
                 </aside>
-
             </main>
         );
     }

@@ -53,7 +53,7 @@ export default class NetworkBox extends React.Component {
     render() {
         return (
 
-            <a className={this.props.network.icon + " networkBox"} data-toggle="tooltip" data-placement="bottom" title={this.props.network.name} data-selected="false" value={this.props.network.name} onClick={this.checkToggle}></a>
+            <a className={this.props.network.icon + " networkBox fa-3x"} data-toggle="tooltip" data-placement={this.props.network.position} title={this.props.network.name} data-selected="false" value={this.props.network.name} onClick={this.checkToggle}></a>
 
         );
     }

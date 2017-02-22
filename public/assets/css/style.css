@@ -87,7 +87,20 @@ body {
 
 .navbar {
   color: #695d46;
-  height: 15vh; }
+  height: 15vh;
+  box-shadow: 0px 1px 1px #cfc291; }
+  .navbar #leftNav {
+    display: flex;
+    justify-content: flex-start;
+    width: 40%; }
+  .navbar #middleNav {
+    display: flex;
+    width: 20%;
+    justify-content: center; }
+  .navbar #rightNav {
+    display: flex;
+    width: 40%;
+    justify-content: flex-end; }
   .navbar button[value="submit"] {
     margin-left: 0.5vw;
     margin-right: 0.5vw; }
@@ -106,7 +119,8 @@ body {
   margin-left: 5px; }
 
 #mainShoutDiv {
-  text-align: center; }
+  text-align: center;
+  width: 100%; }
 
 #welcomeScreen {
   text-align: center; }
@@ -152,7 +166,8 @@ main {
   color: #695d46; }
 
 #mainShout {
-  margin: 0 10px; }
+  margin: 0 10px;
+  width: 30%; }
 
 #socialChecks a {
   margin: 5px; }
@@ -172,6 +187,9 @@ footer {
   height: 10vh;
   width: 100%;
   position: fixed;
-  bottom: 0; }
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center; }
 
 /*# sourceMappingURL=style.css.map */

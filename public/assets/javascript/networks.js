@@ -14,8 +14,8 @@ module.exports = {
 			}).catch( function (authorizeError) {
 				console.log("/authorizeLinkedIn error: ", authorizeError);
 			});
-		}
-
+		},
+		position: "left"
     },
 
     // twitter
@@ -30,7 +30,8 @@ module.exports = {
 			}).catch( function (authorizeError) {
 				console.log("/authorizeTwitter error: ", authorizeError);
 			});
-		}
+		},
+		position: "right"
     },
 
     // facebook

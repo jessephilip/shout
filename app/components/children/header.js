@@ -331,8 +331,8 @@ export default class Header extends React.Component {
                 // show password
                 signUpPassword.setAttribute("class", "show");
 
-				// give focus to signUpPassword
-				signUpPassword.focus();
+                // give focus to signUpPassword
+                signUpPassword.focus();
 
             } else {
 
@@ -351,32 +351,31 @@ export default class Header extends React.Component {
                         console.log(result.data.errmsg);
 
                         let check = result.data.errmsg.includes("E11000");
-						console.log(check);
+                        console.log(check);
 
                         if (check) {
 
-							// notify the user that they attepted a username that is already taken
+                            // notify the user that they attepted a username that is already taken
                             alertify.error(`${this.signUp.username} is already taken. Please try a different username.`);
 
-							// reset this.signUp
-							this.signUp = {};
+                            // reset this.signUp
+                            this.signUp = {};
 
-							// hide stuff
-							signUpPassword.setAttribute("class", "hidden");
-							signUpConfirm.setAttribute("class", "hidden");
+                            // hide stuff
+                            signUpPassword.setAttribute("class", "hidden");
+                            signUpConfirm.setAttribute("class", "hidden");
 
-							// show stuff
-							signUpUsername.setAttribute("class", "show");
+                            // show stuff
+                            signUpUsername.setAttribute("class", "show");
 
-							// give signUpUsername focus
-							signUpUsername.focus();
+                            // give signUpUsername focus
+                            signUpUsername.focus();
 
+                        } else {
+                            alertify.error("There was some other error Shout is unaware of. Oh no!!!");
                         }
-						else {
-							alertify.error("There was some other error Shout is unaware of. Oh no!!!");
-						}
 
-                    // if no error returned, handle signup procedures
+                        // if no error returned, handle signup procedures
                     } else {
 
                         // provide visual cues to the user
@@ -402,18 +401,18 @@ export default class Header extends React.Component {
                         // show mainShoutDiv
                         document.getElementById('mainShoutDiv').style.display = "initial";
 
-						// reset this.signUp in case another user account is set up
-						this.signUp = {};
+                        // reset this.signUp in case another user account is set up
+                        this.signUp = {};
 
-						// hide stuff
-						signUpPassword.setAttribute("class", "hidden");
-						signUpConfirm.setAttribute("class", "hidden");
+                        // hide stuff
+                        signUpPassword.setAttribute("class", "hidden");
+                        signUpConfirm.setAttribute("class", "hidden");
 
-						// show stuff
-						signUpUsername.setAttribute("class", "show");
+                        // show stuff
+                        signUpUsername.setAttribute("class", "show");
 
-						// give focus to the mainShout Input Field
-						document.getElementById('mainShout').focus();
+                        // give focus to the mainShout Input Field
+                        document.getElementById('mainShout').focus();
 
                     }
                 }).catch((error) => {
@@ -493,55 +492,61 @@ export default class Header extends React.Component {
     render() {
         return (
             <nav className="navbar navbar-toggleable-md navbar-light fixed-top bg-accent d-flex justify-content-between">
-                <button className="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span className="navbar-toggler-icon"></span>
-                </button>
-                <a id="brand" className="navbar-brand" onClick={this.sideBarToggle} data-toggle="tooltip" data-placement="right" title="Open Drawer">
-                    <i className="fa fa-bullhorn fa-2x"></i>
-                </a>
-                <h1>Shout</h1>
-                <aside id="loginDiv">
-                    <button id="loginButton" className="btn btn-outline-primary" onClick={this.loginClick}>Login</button>
-                    <button id="signUpButton" className="btn btn-outline-primary" onClick={this.signUpClick}>Sign Up</button>
-                </aside>
-                <aside id="loginForm" className="hidden">
-                    <input id="loginUsername" type="text" placeholder="login username"/>
-                    <input id="loginPassword" type="password" className="hidden" placeholder="password"/>
-                    <button type="submit" className="btn btn-primary btn-sm" onClick={this.loginSubmit} value="submit">Submit</button>
-                    <button type="submit" className="btn btn-primary btn-sm" onClick={this.loginCancel} value="cancel">Cancel</button>
-                </aside>
-                <aside id="signUpForm" className="hidden">
-                    <input id="signUpUsername" type="text" placeholder="desired username"/>
-                    <input id="signUpPassword" type="password" className="hidden" placeholder="password"/>
-                    <input id="signUpConfirm" type="password" className="hidden" placeholder="confirm password"/>
-                    <button type="submit" className="btn btn-primary btn-sm" onClick={this.signUpSubmit} value="submit">Submit</button>
-                    <button type="submit" className="btn btn-primary btn-sm" onClick={this.signUpCancel} value="cancel">Cancel</button>
-                </aside>
-                <aside id="signedInAside" className="hidden">
-                    <div>
-                        <span>
-                            <a data-toggle="tooltip" data-placement="left" title="user options" onClick={this.optionsClick}>
-                                <div>
-                                    <i className="fa fa-user fa-2x"></i>
-                                </div>
-                                <span>{this.state.username}</span>
+                <section id="leftNav">
+                    <button className="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span className="navbar-toggler-icon"></span>
+                    </button>
+                    <a id="brand" className="navbar-brand" onClick={this.sideBarToggle} data-toggle="tooltip" data-placement="right" title="Open Drawer">
+                        <i className="fa fa-bullhorn fa-2x"></i>
+                    </a>
+                </section>
+                <section id="middleNav">
+                    <h1>Shout</h1>
+                </section>
+                <section id="rightNav">
+                    <aside id="loginDiv">
+                        <button id="loginButton" className="btn btn-outline-primary" onClick={this.loginClick}>Login</button>
+                        <button id="signUpButton" className="btn btn-outline-primary" onClick={this.signUpClick}>Sign Up</button>
+                    </aside>
+                    <aside id="loginForm" className="hidden">
+                        <input id="loginUsername" type="text" placeholder="login username"/>
+                        <input id="loginPassword" type="password" className="hidden" placeholder="password"/>
+                        <button type="submit" className="btn btn-primary btn-sm" onClick={this.loginSubmit} value="submit">Submit</button>
+                        <button type="submit" className="btn btn-primary btn-sm" onClick={this.loginCancel} value="cancel">Cancel</button>
+                    </aside>
+                    <aside id="signUpForm" className="hidden">
+                        <input id="signUpUsername" type="text" placeholder="desired username"/>
+                        <input id="signUpPassword" type="password" className="hidden" placeholder="password"/>
+                        <input id="signUpConfirm" type="password" className="hidden" placeholder="confirm password"/>
+                        <button type="submit" className="btn btn-primary btn-sm" onClick={this.signUpSubmit} value="submit">Submit</button>
+                        <button type="submit" className="btn btn-primary btn-sm" onClick={this.signUpCancel} value="cancel">Cancel</button>
+                    </aside>
+                    <aside id="signedInAside" className="hidden">
+                        <div>
+                            <span>
+                                <a data-toggle="tooltip" data-placement="left" title="user options" onClick={this.optionsClick}>
+                                    <div>
+                                        <i className="fa fa-user fa-2x"></i>
+                                    </div>
+                                    <span>{this.state.username}</span>
+                                </a>
+                            </span>
+                        </div>
+                    </aside>
+                    <aside id="optionsAside" className="hidden">
+                        <div>
+                            <a>
+                                <i className="fa fa-cloud fa-2x" data-toggle="tooltip" data-placement="bottom" title="authorize" onClick={this.authorizeClick}></i>
                             </a>
-                        </span>
-                    </div>
-                </aside>
-                <aside id="optionsAside" className="hidden">
-                    <div>
-                        <a>
-                            <i className="fa fa-cloud fa-2x" data-toggle="tooltip" data-placement="bottom" title="authorize" onClick={this.authorizeClick}></i>
-                        </a>
-                        <a>
-                            <i className="fa fa-sign-out fa-2x" data-toggle="tooltip" data-placement="bottom" title="signout" onClick={this.signoutClick}></i>
-                        </a>
-                        <a>
-                            <i className="fa fa-chevron-right fa-2x" data-toggle="tooltip" data-placement="bottom" title="back" onClick={this.backClick}></i>
-                        </a>
-                    </div>
-                </aside>
+                            <a>
+                                <i className="fa fa-sign-out fa-2x" data-toggle="tooltip" data-placement="bottom" title="signout" onClick={this.signoutClick}></i>
+                            </a>
+                            <a>
+                                <i className="fa fa-chevron-right fa-2x" data-toggle="tooltip" data-placement="bottom" title="back" onClick={this.backClick}></i>
+                            </a>
+                        </div>
+                    </aside>
+                </section>
             </nav>
         );
     }

@@ -23,11 +23,12 @@ export default class SideLists extends React.Component {
             <section>
                 <nav id="sideBarNav">
                     <ul className="nav nav-pills nav-fill">
-                        <li className="nav-item">
+                        {/* <li className="nav-item">
                             <a className="nav-link" onClick={this.props.clicked}>
-                                <i className="fa fa-linkedin-square" value="linkedin"></i>
+                                <i className="fa fa-linkedin-square fa-2x" value="linkedin"></i>
                             </a>
-                        </li>
+                        </li> */}
+						{/*
                         <li className="nav-item">
                             <a className="nav-link" onClick={this.props.clicked}>
                                 <i className="fa fa-facebook-square" value="facebook"></i>
@@ -37,13 +38,13 @@ export default class SideLists extends React.Component {
                             <a className="nav-link" onClick={this.props.clicked}>
                                 <i className="fa fa-instagram" value="instagram"></i>
                             </a>
-                        </li>
+                        </li> */}
                         <li className="nav-item">
                             <a className="nav-link" onClick={this.props.clicked}>
-                                <i className="fa fa-twitter-square" value="twitter"></i>
+                                <i className="fa fa-twitter-square fa-2x" value="twitter"></i>
                             </a>
                         </li>
-                        <li className="nav-item">
+                        {/* <li className="nav-item">
                             <a className="nav-link" onClick={this.props.clicked}>
                                 <i className="fa fa-google-plus-square" value="googleplus"></i>
                             </a>
@@ -57,7 +58,7 @@ export default class SideLists extends React.Component {
                             <a className="nav-link" onClick={this.props.clicked}>
                                 <i className="fa fa-tumblr-square" value="tumblr"></i>
                             </a>
-                        </li>
+                        </li> */}
                     </ul>
                 </nav>
                 <article id="navOutput">
